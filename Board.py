@@ -1,5 +1,6 @@
 import numpy as np
 from Slot import Slot
+from Disc import Disc
 
 
 class Board:

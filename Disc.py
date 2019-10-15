@@ -4,14 +4,14 @@ class Disc:
     """
 
     # Add parameters as you want...
-    def __init__(self, strRep):
+    def __init__(self, str_rep):
         """
 
         """
-        self.strRep = strRep
+        self.str_rep = str_rep
 
     def __str__(self):
         """
         :return: The string representation of the disc.
         """
-        return self.strRep
+        return self.str_rep

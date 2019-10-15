@@ -5,10 +5,24 @@ class Slot:
 
     def __init__(self, disc=None):
         """
+        Constructor for a slot object
 
-        :param disc:
+        :param disc: The disc that the slot contains.
         """
         self.disc = disc
+
+    def place(self, disc):
+        """
+
+        :param disc:
+        :return:
+        """
+        # Checking if the slot is empty and inserting disk
+        if self.is_empty():
+            self.disc = disc
+            return True
+        # This slot is already full.
+        return False
 
     def is_empty(self):
         """
@@ -23,5 +37,5 @@ class Slot:
         # Return depending on if the slot is empty.
         if self.is_empty():
             return " "
-        return "" + self.disc
+        return str(self.disc)
 
