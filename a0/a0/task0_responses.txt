@@ -1,0 +1,31 @@
+
+Q1. What classes in the given code are using inheritance? State clearly which is the parent class and which are the subclasses.
+
+YOUR ANSWER:
+
+The classes using inheritance are Actor, Player, Chaser, Star, and Wall, where
+the parent class is Actor and the child classes are Player, Chaser, Star and Wall.
+
+
+
+Q2. Where in the code do you see an example of polymorphism? State the class and method name where this occurs.
+
+YOUR ANSWER:
+
+An example of polymorphism in the code can be seen with the Actor class and the
+abstract move method. The move method is implemented differently for instances
+of the subclasses (Player, Chaser, Star and Wall). Hence this is an example of
+polymorphism.
+
+
+Q3. What classes in the given code are using composition?
+
+YOUR ANSWER:
+
+The Game class uses composition as its instance attribute _actors stores a list
+of Actor objects.
+
+
+
+
+
