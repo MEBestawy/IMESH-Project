@@ -54,7 +54,7 @@ class Button:
         """
         pygame.draw.rect(display, self.colour, (self.x, self.y, self.width, self.height), 0)
 
-        font = pygame.font.SysFont('serif', 30)
+        font = pygame.font.SysFont('gloucesterextracondensed', 30)
         label = font.render(self.label, 1, (255, 255, 255))
 
         display.blit(label, (self.x + (self.width/2 - label.get_width()/2), self.y + (self.height/2 - label.get_height()/2)))

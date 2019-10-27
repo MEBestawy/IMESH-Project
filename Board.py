@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Dict
+from typing import Dict, Tuple
 
 
 class Board:
@@ -105,6 +105,13 @@ class Board:
         possible.
         """
         return self.__avail_pos.get(col, -1)
+
+    def get_grid_size(self) -> Tuple:
+        """
+        Method that returns the size of the matrix board representation.
+        :return:
+        """
+        return self.__grid.shape
 
     def __str__(self):
         """
