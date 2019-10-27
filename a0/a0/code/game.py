@@ -158,7 +158,6 @@ class Game:
 
         pygame.quit()
 
-
     def on_execute(self) -> None:
         """
         Run the game until the game ends.
