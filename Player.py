@@ -16,3 +16,12 @@ class Player:
         Instantiate a Player object.
         """
         self.disc = disc
+
+    def make_move(self, col: int):
+        """
+        Let self make a move at column <col>.
+
+        :param col: a column in the game board.:
+        :return:
+        """
+        raise NotImplementedError
