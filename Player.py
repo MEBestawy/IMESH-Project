@@ -13,7 +13,7 @@ class Player:
     icon: the image representing this player
 
     """
-    
+
     disc: str
     icon: pygame.Surface
 
@@ -22,7 +22,7 @@ class Player:
         Instantiate a Player object, with their respective
         """
         self.disc = disc
-<<<<<<< HEAD
+        self.icon = pygame.image.load(icon_file)
 
     def make_move(self, col: int):
         """
@@ -32,6 +32,3 @@ class Player:
         :return:
         """
         raise NotImplementedError
-=======
-        self.icon = pygame.image.load(icon_file)
->>>>>>> 952aa4def8970681095c6fa1efb8ab65e67b249b
