@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Dict, Tuple
 
 
 class Board:
@@ -15,11 +16,29 @@ class Board:
     Code for __str__() method was inspired by CSC207 Assignment 1:
         Assignment URL:
             https://axiom.utm.utoronto.ca/~207/19f/assignments/a1/index.shtml
+
+
+    ===Private Attributes===
+    __grid: A 2D numpy array responsible for holding the information about the
+            state of the board throughout the game.
+    __avail_pos: A dictionary containing which rows a player can place a token
+                 depending on the column. This dictionary maps column indices
+                 as keys to values of rows of potential next moves.
+
+    ===Static Variables===
+    P1: The string representation of the first player.
+    P2: The string representation of the second player.
+    EMPTY: The string representation of an empty slot on the board.
+
     """
     # Static variables for board info
     P1 = "X"
     P2 = "O"
-    EMPTY = "_"
+    EMPTY = "-"
+
+    # Private Attributes
+    __grid: np.ndarray
+    __avail_pos: Dict[int, int]
 
     def __init__(self, length=6, width=7):
         """
@@ -50,6 +69,13 @@ class Board:
 
     def get_winner(self, col: int) -> str:
         """
+        After a player has moved, this method gets the winner, if a winner
+        exists. If a winner does not exist yet, the string representation for an
+        empty slot would be returned.
+
+        Precondition:
+        A win would only be possible using the top-most disc of inputted col,
+        nowhere else on the board should a win condition be possible.
 
         :param col: The column that
         :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
@@ -61,7 +87,7 @@ class Board:
         """
         Checks if there is a valid move at the inputted column.
 
-        :param col: A column of the baord.
+        :param col: A column of the board.
         :return: Whether a move on this column is possible.
         """
         # Checking if the column is in the board, and has available moves.
@@ -80,7 +106,14 @@ class Board:
         """
         return self.__avail_pos.get(col, -1)
 
-    def __str__(self) -> str:
+    def get_grid_size(self) -> Tuple:
+        """
+        Method that returns the size of the matrix board representation.
+        :return:
+        """
+        return self.__grid.shape
+
+    def __str__(self):
         """
         :return: The string representation of the board.
         """
@@ -123,4 +156,3 @@ class Board:
 if __name__ == "__main__":
     board = Board()
     print(board)
-    print(board.valid_move(3))
