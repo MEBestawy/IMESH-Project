@@ -64,8 +64,12 @@ class Board:
         :param col: The column on the board the player wants to move.
         :return: Whether the move was successfully done.
         """
-        # TODO: Build is method.
-        raise NotImplementedError
+        if self.valid_move(col):
+            if player == Board.P1 or player == Board.P2:
+                self.__grid[self.get_avail_row(col)][col] = player
+                self.__avail_pos[col] -= 1
+                return True
+        return False
 
     def get_winner(self, col: int) -> str:
         """
@@ -91,11 +95,9 @@ class Board:
         :return: Whether a move on this column is possible.
         """
         # Checking if the column is in the board, and has available moves.
-        if 0 <= col <= self.__grid.shape[1]:
-            return self.get_avail_row(col) >= 0
-        return False
+        return self.get_avail_row(col) >= 0
 
-    def get_avail_row(self, col: int):
+    def get_avail_row(self, col: int) -> int:
         """
         Method checks which row a token would be positioned at if it were to be
         dropped at column col.
@@ -106,7 +108,7 @@ class Board:
         """
         return self.__avail_pos.get(col, -1)
 
-    def get_grid_size(self) -> Tuple:
+    def get_grid_size(self) -> Tuple[int, int]:
         """
         Method that returns the size of the matrix board representation.
         :return:
@@ -155,4 +157,16 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+    board.move(Board.P1, 3)
+    board.move(Board.P2, 3)
+    board.move(Board.P1, 3)
+    board.move(Board.P2, 3)
+    board.move(Board.P1, 0)
+    board.move("R", 3)
+    board.move(Board.P2, 3)
+    board.move(Board.P1, 3)
+    print(board.move(Board.P1, 3))
+    print(board.move(Board.P1, -1))
+    print(board.move(Board.P1, 6))
+    print(board.move(Board.P1, 7))
     print(board)
