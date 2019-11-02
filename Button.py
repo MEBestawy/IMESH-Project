@@ -46,18 +46,20 @@ class Button:
         self.width = width
         self.label = label
 
-    def draw(self, display) -> None:
+    def draw(self, screen) -> None:
         """
         Draws the Button on the given pygame display.
-        :param display: pygame display
+        :param screen: pygame display
         :return: None
         """
-        pygame.draw.rect(display, self.colour, (self.x, self.y, self.width, self.height), 0)
 
-        font = pygame.font.SysFont('comicsansms', 30)
+        button = pygame.image.load("./Assets/button.png").convert()
+        button.set_colorkey((85, 255, 0))
+
+        font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
         label = font.render(self.label, 1, (255, 255, 255))
-
-        display.blit(label, (self.x + (self.width/2 - label.get_width()/2), self.y + (self.height/2 - label.get_height()/2)))
+        screen.blit(button, (self.x, self.y))
+        screen.blit(label, (self.x + (self.width/2 - label.get_width()/2), self.y + (self.height/2 - label.get_height()/2)))
 
     def is_hover(self, position) -> bool:
         """

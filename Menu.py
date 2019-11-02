@@ -46,6 +46,7 @@ class Menu:
         """
         self._game = game
         self._handler = handler
+        self._xpos = 0
 
         self.play = Button((0, 0, 0), 350, 250, 50, 120, "PLAY")
         self.about = Button((0, 0, 0), 350, 350, 50, 120, "ABOUT")
@@ -87,32 +88,42 @@ class Menu:
         if pygame.mouse.get_pressed()[0]:
             self.on_event(pygame.mouse)
 
-    def render(self, display: pygame.Surface):
+    def render(self, screen: pygame.Surface):
         """
         Renders the game screen depending on the
         current game state.
         """
+
+
         if self._game.gamestate == STATE.Menu:
             # Draws the background
-            display.fill((0, 0, 0))
-            pygame.draw.rect(display, (150, 150, 150), (50, 50, 700, 500))
+            background = pygame.image.load("./Assets/BACKGROUND.png").convert()
+
+            screen.fill((0, 0, 0))
+            rel_x = self._xpos % background.get_rect().width
+            screen.blit(background, (rel_x - background.get_rect().width, 0))
+            if rel_x < screen.get_width():
+                screen.blit(background, (rel_x, 0))
+
+            self._xpos -= 1
+
 
             # Set the text
-            font = pygame.font.SysFont('comicsansms', 75)
-            title = font.render("connect 2^2", 1, (255, 255, 255))
-            display.blit(title, ((self._game.width/2 - title.get_width()/2), 75))
+            title = pygame.image.load("./Assets/title.png").convert()
+            title.set_colorkey((85, 255, 0))
+            screen.blit(title, ((self._game.width/2 - title.get_width()/2), 75))
 
             # Draw the Buttons
-            self.play.draw(display)
-            self.about.draw(display)
-            self.quit.draw(display)
+            self.play.draw(screen)
+            self.about.draw(screen)
+            self.quit.draw(screen)
 
         if self._game.gamestate == STATE.About:
-            pygame.draw.rect(display, (255, 100, 100), (0, 0, 800, 600))
-            self.back.draw(display)
+            pygame.draw.rect(screen, (255, 100, 100), (0, 0, 800, 600))
+            self.back.draw(screen)
 
         if self._game.gamestate == STATE.End:
-            display.fill((0, 0, 0))
+            screen.fill((0, 0, 0))
 
 
 

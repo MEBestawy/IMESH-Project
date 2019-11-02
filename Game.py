@@ -91,6 +91,10 @@ class Game:
         """
         pygame.init()
 
+        CLOCK = pygame.time.Clock()
+        FPS = 60
+
+
         # Starts the game window centered to window screen
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("Connect 2^2")
@@ -156,9 +160,9 @@ class Game:
                 self.on_event(event)
             self.tick()
             self.render()
-        
+
         pygame.quit()
-        
+
         # Have to add this line here to properly close the window w/ Macs
         exit()
 
