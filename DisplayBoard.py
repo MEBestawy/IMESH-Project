@@ -1,7 +1,6 @@
 import pygame
 from State import STATE
 from Button import Button
-from ColumnButton import ColumnButton
 
 
 BLACK = (0, 0, 0)
@@ -25,7 +24,7 @@ class DisplayBoard:
         self.handler = handler
         self.buttons = []
         
-        self.board = boar
+        self.board = board
     
             
 
