@@ -10,7 +10,7 @@ class STATE(Enum):
     """
     # Public Static Variables
     Menu = 1
-    About = 2
+    Option = 2
     Game = 3
     End = 4
 

@@ -64,9 +64,16 @@ class Game:
         self.has_winner = False
         self.size = (self.width, self.height)
         self.screen = None
+        self.tracks = {
+            0: "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
+            1: "./Assets/audio/bgm/louie_zong_cat_toy.wav"
+        }
 
         # Initializes the classes for that the game requires to run and update
         # the game.
+        pygame.mixer.pre_init(44100, -16, 2, 512)
+        pygame.mixer.init(44100, -16, 2, 512)
+
         self.board = Board.Board()
         self.handler = Handler.Handler()
         self.menu = Menu.Menu(self, self.handler)
@@ -83,7 +90,8 @@ class Game:
         """
         Sets the current game background music to a <track>
         """
-        pass
+        pygame.mixer.music.load(track)
+        pygame.mixer.music.play(-1)
 
     def on_init(self):
         """
@@ -91,13 +99,12 @@ class Game:
         """
         pygame.init()
 
-        CLOCK = pygame.time.Clock()
-        FPS = 60
-
-
         # Starts the game window centered to window screen
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("Connect 2^2")
+
+        # Starts the game audio
+        self.set_bgm(self.tracks[1])
 
         # Sets the pygame display screen to self.size
         # and displays with either Hardware Surface or
@@ -105,6 +112,8 @@ class Game:
         self.screen = pygame.display.set_mode\
             (self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.running = True
+
+
 
     def on_event(self, event: pygame.event):
         """
@@ -128,7 +137,7 @@ class Game:
 
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
-                self.gamestate == STATE.About:
+                self.gamestate == STATE.Option:
             self.handler.tick()
             self.menu.tick()
 
@@ -143,7 +152,7 @@ class Game:
 
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
-                self.gamestate == STATE.About:
+                self.gamestate == STATE.Option:
             self.handler.render(self.screen)
             self.menu.render(self.screen)
 

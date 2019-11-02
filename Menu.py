@@ -20,7 +20,7 @@ class Menu:
 
     play: a Button with the label "PLAY"
 
-    about: a Button with the label "ABOUT"
+    option: a Button with the label "OPTION"
 
     quit: a Button with the label "QUIT"
 
@@ -33,7 +33,7 @@ class Menu:
 
     # Public Instance Attributes
     play: Button
-    about: Button
+    option: Button
     quit: Button
     back: Button
 
@@ -47,11 +47,12 @@ class Menu:
         self._game = game
         self._handler = handler
         self._xpos = 0
+        self.sound = pygame.mixer.Sound("./Assets/audio/sfx/click.wav")
 
         self.play = Button((0, 0, 0), 350, 250, 50, 120, "PLAY")
-        self.about = Button((0, 0, 0), 350, 350, 50, 120, "ABOUT")
+        self.option = Button((0, 0, 0), 350, 350, 50, 120, "OPTION")
         self.quit = Button((0, 0, 0), 350, 450, 50, 120, "QUIT")
-        self.back = Button((0, 0, 0), 600, 450, 50, 120, "BACK")
+        self.back = Button((0, 0, 0), 650, 525, 50, 120, "BACK")
 
     def on_event(self, mouse_press):
         """
@@ -62,6 +63,7 @@ class Menu:
 
         if self._game.gamestate == STATE.Menu:
             if self.play.is_hover(pos):
+                self.sound.play()
                 self._game.gamestate = STATE.Game
                 # Clear the screen of game objects
                 self._handler.clear_all()
@@ -69,14 +71,17 @@ class Menu:
                 # call the game board here once
                 # the game board is fully functional
 
-            if self.about.is_hover(pos):
-                self._game.gamestate = STATE.About
+            if self.option.is_hover(pos):
+                self.sound.play()
+                self._game.gamestate = STATE.Option
 
             if self.quit.is_hover(pos):
+                self.sound.play()
                 self._game.running = False
 
-        if self._game.gamestate == STATE.About:
+        if self._game.gamestate == STATE.Option:
             if self.back.is_hover(pos):
+                self.sound.play()
                 self._game.gamestate = STATE.Menu
 
     def tick(self):
@@ -93,20 +98,16 @@ class Menu:
         Renders the game screen depending on the
         current game state.
         """
+        # Draws the background
+        background = pygame.image.load("./Assets/BACKGROUND.png").convert()
 
-
+        screen.fill((0, 0, 0))
+        rel_x = self._xpos % background.get_rect().width
+        screen.blit(background, (rel_x - background.get_rect().width, 0))
+        if rel_x < screen.get_width():
+            screen.blit(background, (rel_x, 0))
+        self._xpos -= 1
         if self._game.gamestate == STATE.Menu:
-            # Draws the background
-            background = pygame.image.load("./Assets/BACKGROUND.png").convert()
-
-            screen.fill((0, 0, 0))
-            rel_x = self._xpos % background.get_rect().width
-            screen.blit(background, (rel_x - background.get_rect().width, 0))
-            if rel_x < screen.get_width():
-                screen.blit(background, (rel_x, 0))
-
-            self._xpos -= 1
-
 
             # Set the text
             title = pygame.image.load("./Assets/title.png").convert()
@@ -115,11 +116,10 @@ class Menu:
 
             # Draw the Buttons
             self.play.draw(screen)
-            self.about.draw(screen)
+            self.option.draw(screen)
             self.quit.draw(screen)
 
-        if self._game.gamestate == STATE.About:
-            pygame.draw.rect(screen, (255, 100, 100), (0, 0, 800, 600))
+        if self._game.gamestate == STATE.Option:
             self.back.draw(screen)
 
         if self._game.gamestate == STATE.End:
