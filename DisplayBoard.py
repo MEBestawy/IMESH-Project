@@ -1,6 +1,8 @@
 import pygame
 from State import STATE
 from Button import Button
+from ColumnButton import ColumnButton
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -8,6 +10,7 @@ GREY = (150, 150, 150)
 LIGHTBLUE = (183, 208, 218)
 BLUE = (65, 105, 225)
 GREY = (100, 118, 141)
+LIGHTERBLUE = (217, 233, 239)
 
 
 class DisplayBoard:
@@ -22,10 +25,8 @@ class DisplayBoard:
         self.handler = handler
         self.buttons = []
         
-        self.board = board
-        
-        for row in range(7):
-            self.buttons.append(Button((0, 0, 0), (game.width + 50)/8 * row + 30, 50, 55, 100, " "))
+        self.board = boar
+    
             
 
     def on_event(self, mousepress):
@@ -57,7 +58,7 @@ class DisplayBoard:
         NUMBEROFROWS = self.board.get_grid_size()[0]
         
         # Adding a Background
-        board_background = pygame.image.load('./Assets/clean board.png') 
+        board_background = pygame.image.load('./Assets/BOARD.png').convert()
         display.blit(board_background, (0, 0)) 
 
         # Creates the pyGame Board with corresponding slots and holes from the matrix board representation.
@@ -69,14 +70,7 @@ class DisplayBoard:
             for row in range(NUMBEROFROWS):
                 
                 pygame.draw.circle(display, 
-                                   LIGHTBLUE, 
+                                   LIGHTERBLUE, 
                                    (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))), 
                                     HOLE_SIZE)
-        
-        """
-        # ADDING THE BUTTONS AT THE TOP OF EACH COLUMN
-        # NOT IMPLEMENTED PROPERLY YET
-        for button in self.buttons:
-            button.draw(display)
-        """
  
