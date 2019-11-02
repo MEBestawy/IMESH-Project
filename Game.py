@@ -1,4 +1,5 @@
 import pygame
+from pygame import mouse
 import os
 import Handler
 import Menu
@@ -24,7 +25,7 @@ class Game:
 
     has_winner: if a player has won the game
 
-    screen: the display of the game
+    screen: the display window of the game
 
     board: The matrix representation of our board in the console.
 
@@ -155,8 +156,11 @@ class Game:
                 self.on_event(event)
             self.tick()
             self.render()
-
+        
         pygame.quit()
+        
+        # Have to add this line here to properly close the window w/ Macs
+        exit()
 
 
 if __name__ == "__main__":
