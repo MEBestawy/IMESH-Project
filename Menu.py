@@ -121,10 +121,9 @@ class Menu:
         If the pygame.event == MOUSEBUTTONDOWN, then
         animate accordingly.
         """
-        if pygame.mouse.get_pressed()[0]:
-            if not self._game.pressed:
+        for event in self._game.events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 self.on_event(pygame.mouse)
-                self._game.pressed = True
 
     def render(self, screen: pygame.Surface):
         """
