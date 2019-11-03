@@ -48,11 +48,22 @@ class Menu:
         self._handler = handler
         self._xpos = 0
         self.sound = pygame.mixer.Sound("./Assets/audio/sfx/click.wav")
+        self.trackname = "track_" + str(self._game.currtrack)
 
-        self.play = Button((0, 0, 0), 350, 250, 50, 120, "PLAY")
-        self.option = Button((0, 0, 0), 350, 350, 50, 120, "OPTION")
-        self.quit = Button((0, 0, 0), 350, 450, 50, 120, "QUIT")
-        self.back = Button((0, 0, 0), 650, 525, 50, 120, "BACK")
+        # Creates reusable assets
+
+        # Instantiates a translucent background
+        self.transbg = pygame.Surface((700, 400))
+        self.transbg.set_alpha(100)
+        self.transbg.fill((0, 0, 0))
+
+        # Instantiates the buttons
+        self.play = Button((0, 0, 0), 350, 250, 50, 120, "PLAY", 20, True)
+        self.option = Button((0, 0, 0), 350, 350, 50, 120, "OPTION", 20, True)
+        self.quit = Button((0, 0, 0), 350, 450, 50, 120, "QUIT", 20, True)
+        self.back = Button((0, 0, 0), 650, 525, 50, 120, "BACK", 20, True)
+        self.arrowl = Button((0, 0, 0), 350, 115, 50, 50, " < ", 40, False)
+        self.arrowr = Button((0, 0, 0), 655, 115, 50, 50, " > ", 40, False)
 
     def on_event(self, mouse_press):
         """
@@ -79,7 +90,28 @@ class Menu:
                 self.sound.play()
                 self._game.running = False
 
-        if self._game.gamestate == STATE.Option:
+        elif self._game.gamestate == STATE.Option:
+            currtracknum = self._game.currtrack
+
+            if self.arrowl.is_hover(pos):
+                self.sound.play()
+                if currtracknum > 0:
+                    self._game.set_bgm(self._game.tracks[currtracknum - 1],
+                                       currtracknum - 1)
+                elif currtracknum == 0:
+                    self._game.set_bgm(self._game.tracks[-1],
+                                       len(self._game.tracks) - 1)
+                self.trackname = self.trackname[:-1] + str(currtracknum)
+
+            if self.arrowr.is_hover(pos):
+                self.sound.play()
+                if currtracknum < len(self._game.tracks) - 1:
+                    self._game.set_bgm(self._game.tracks[currtracknum + 1],
+                                       currtracknum + 1)
+                elif currtracknum == len(self._game.tracks) - 1:
+                    self._game.set_bgm(self._game.tracks[0], 0)
+                self.trackname = self.trackname[:-1] + str(currtracknum)
+
             if self.back.is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Menu
@@ -91,7 +123,9 @@ class Menu:
         animate accordingly.
         """
         if pygame.mouse.get_pressed()[0]:
-            self.on_event(pygame.mouse)
+            if not self._game.pressed:
+                self.on_event(pygame.mouse)
+                self._game.pressed = True
 
     def render(self, screen: pygame.Surface):
         """
@@ -120,7 +154,27 @@ class Menu:
             self.quit.draw(screen)
 
         if self._game.gamestate == STATE.Option:
+            # Create the font
+            font = pygame.font.Font("./Assets/joystix_monospace.ttf", 40)
+            font2 = pygame.font.Font("./Assets/joystix_monospace.ttf", 25)
+
+            # Instantiate the text and other objects
+            options = font.render("OPTIONS", 1, (255, 255, 255))
+            bgm = font2.render("SELECT BGM", 1, (255, 255, 255))
+            trknm = font2.render(self.trackname, 1, (255, 255, 255))
+
+
+            # Display the title and other objects
+            screen.blit(self.transbg, (50, 100))
+            pygame.draw.rect(screen, (255, 255, 255), (50, 100, 700, 400), 3)
+            screen.blit(options, ((self._game.width/2 - options.get_width()/2), 40))
+            screen.blit(bgm, (75, 125))
+            screen.blit(trknm, ((655 + 350 + 50)/2 - trknm.get_width()/2, 125))  #around 450
+
+            # Draw button
             self.back.draw(screen)
+            self.arrowl.draw(screen)
+            self.arrowr.draw(screen)
 
         if self._game.gamestate == STATE.End:
             screen.fill((0, 0, 0))

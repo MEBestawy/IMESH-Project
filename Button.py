@@ -34,7 +34,7 @@ class Button:
     width: int
     label: str
 
-    def __init__(self, colour, x, y, height, width, label):
+    def __init__(self, colour, x, y, height, width, label, fontsize, visible):
         """
         Initializes a Button with the given colour, at coordinates (x,y), with the given
         sizes width and height, and a label that describes the Button
@@ -45,6 +45,8 @@ class Button:
         self.height = height
         self.width = width
         self.label = label
+        self.fontsize = fontsize
+        self.visible = visible
 
     def draw(self, screen) -> None:
         """
@@ -52,13 +54,15 @@ class Button:
         :param screen: pygame display
         :return: None
         """
-        button = pygame.image.load("./Assets/button.png").convert()
-        button.set_colorkey((85, 255, 0))
-        font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
-
+        font = pygame.font.Font("./Assets/joystix_monospace.ttf", self.fontsize)
         label = font.render(self.label, 1, (255, 255, 255))
-        screen.blit(button, (self.x, self.y))
-        screen.blit(label, (self.x + (self.width/2 - label.get_width()/2), self.y + (self.height/2 - label.get_height()/2)))
+        screen.blit(label, (self.x + (self.width / 2 - label.get_width() / 2),
+                            self.y + (
+                                        self.height / 2 - label.get_height() / 2)))
+        if self.visible:
+            button = pygame.image.load("./Assets/button.png").convert()
+            button.set_colorkey((85, 255, 0))
+            screen.blit(button, (self.x, self.y))
 
     def is_hover(self, position) -> bool:
         """

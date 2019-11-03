@@ -64,11 +64,16 @@ class Game:
         self.has_winner = False
         self.size = (self.width, self.height)
         self.screen = None
-        self.tracks = {
-            0: "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
-            1: "./Assets/audio/bgm/louie_zong_cat_toy.wav"
-        }
+        self.clock = pygame.time.Clock()
+        self.count = 0
+        self.FPS = 30
+        self.pressed = False
+        self.tracks = [
+            "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
+            "./Assets/audio/bgm/louie_zong_cat_toy.wav"
+        ]
 
+        self.currtrack = 0
         # Initializes the classes for that the game requires to run and update
         # the game.
         pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -86,10 +91,11 @@ class Game:
         # Run the game
         self.run_game()
 
-    def set_bgm(self, track):
+    def set_bgm(self, track, tracknum):
         """
         Sets the current game background music to a <track>
         """
+        self.currtrack = tracknum
         pygame.mixer.music.load(track)
         pygame.mixer.music.play(-1)
 
@@ -104,7 +110,7 @@ class Game:
         pygame.display.set_caption("Connect 2^2")
 
         # Starts the game audio
-        self.set_bgm(self.tracks[1])
+        self.set_bgm(self.tracks[1], 1)
 
         # Sets the pygame display screen to self.size
         # and displays with either Hardware Surface or
@@ -112,8 +118,6 @@ class Game:
         self.screen = pygame.display.set_mode\
             (self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
         self.running = True
-
-
 
     def on_event(self, event: pygame.event):
         """
@@ -131,10 +135,8 @@ class Game:
         if self.gamestate == STATE.Game:
             self.displayboard.tick()
             self.handler.tick()
-
             if self.has_winner:
                 self.gamestate = STATE.End
-
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
@@ -149,7 +151,6 @@ class Game:
         if self.gamestate == STATE.Game:
             self.displayboard.render(self.screen)
             self.handler.render(self.screen)
-
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
@@ -167,9 +168,13 @@ class Game:
         while self.running:
             for event in pygame.event.get():
                 self.on_event(event)
+            self.count += 1
+            self.clock.tick(self.FPS)
             self.tick()
             self.render()
-
+            if self.count == int(self.FPS/2):
+                self.count = 0
+                self.pressed = False
         pygame.quit()
 
         # Have to add this line here to properly close the window w/ Macs
