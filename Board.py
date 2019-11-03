@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 
 class Board:
@@ -95,7 +95,7 @@ class Board:
         :return: Whether a move on this column is possible.
         """
         # Checking if the column is in the board, and has available moves.
-        return self.get_avail_row(col) >= 0
+        return 0 <= self.get_avail_row(col) <= self.__grid.shape[1]
 
     def get_avail_row(self, col: int) -> int:
         """
@@ -111,9 +111,26 @@ class Board:
     def get_grid_size(self) -> Tuple[int, int]:
         """
         Method that returns the size of the matrix board representation.
-        :return:
+        :return: the size of the matrix board representation.
         """
         return self.__grid.shape
+
+    def load(self, board_lst: List) -> None:
+        """
+
+        :param board_lst:
+        """
+        # Loading the board from the list
+        for row in range(len(board_lst)):
+            for col in range(len(board_lst[row])):
+                self.__grid[row][col] = board_lst[row][col]
+
+        # Adjusting moves dictionary
+        for i in range(self.__grid.shape[1]):
+            j = self.__grid.shape[0] - 1
+            while j > -1 and self.__grid[j][i] != Board.EMPTY:
+                j -= 1
+            self.__avail_pos[i] = j
 
     def __str__(self):
         """
@@ -157,6 +174,8 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+    b2 = Board()
+    print(board == b2)
     board.move(Board.P1, 3)
     board.move(Board.P2, 3)
     board.move(Board.P1, 3)
@@ -170,3 +189,8 @@ if __name__ == "__main__":
     print(board.move(Board.P1, 6))
     print(board.move(Board.P1, 7))
     print(board)
+    board.load(["-------","-------","-------","XXXXXXX","XXXXXXX","XXXXXXX"])
+    print(board)
+    print(board.move(Board.P1, 5))
+    print(board)
+

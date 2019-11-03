@@ -11,3 +11,7 @@ __pycache__/GameObject.cpython-37.pyc
 __pycache__/Handler.cpython-37.pyc
 __pycache__/Menu.cpython-37.pyc
 __pycache__/State.cpython-37.pyc
+.idea/misc.xml
+__pycache__/GameStorage.cpython-37.pyc
+*.xml
+.idea/misc.xml
