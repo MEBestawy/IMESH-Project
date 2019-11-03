@@ -26,19 +26,15 @@ class DisplayBoard:
         
         self.board = board
     
-            
 
     def on_event(self, mousepress):
-        pos = mousepress
         
         #print(pygame.mouse.get_pos())
 
-        for button in self.buttons:
-            if button.is_hover(pos):
-                
-                ##does some action with the game
-                print("CLICKK")
-                pass
+        selected_column = self.get_column(mousepress)
+        
+        if selected_column >= 0:
+            print("Selected column: " + str(selected_column))
 
     def tick(self):
         if pygame.mouse.get_pressed()[0]:
@@ -72,4 +68,43 @@ class DisplayBoard:
                                    LIGHTERBLUE, 
                                    (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))), 
                                     HOLE_SIZE)
+                
+                
+    def get_column(self, mousepress):
+        
+        position = mousepress[0]
  
+        if 161 <= position <= 217:
+            return 0
+        
+        elif 231 <= position <=  287:
+            return 1
+        
+        elif 302 <= position <=  358:
+            return 2
+        
+        elif 371 <= position <=  427:
+            return 3
+        
+        elif 441 <= position <=  497:
+            return 4
+        
+        elif 511 <= position <=  567:
+            return 5
+        
+        elif 581 <= position <=  637:
+            return 6
+         
+        else:
+            return -1
+            
+            
+                
+                
+                
+                
+                
+                
+                
+                
+                
