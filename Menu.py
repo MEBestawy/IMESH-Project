@@ -4,6 +4,7 @@ from Button import Button
 import Game
 import Handler
 
+WHITE = (255, 255, 255)
 
 class Menu:
     """
@@ -58,14 +59,21 @@ class Menu:
         self.transbg.fill((0, 0, 0))
 
         # Instantiates the buttons
-        self.play = Button((0, 0, 0), 350, 250, 50, 120, "PLAY", 20, True)
-        self.option = Button((0, 0, 0), 350, 350, 50, 120, "OPTION", 20, True)
-        self.quit = Button((0, 0, 0), 350, 450, 50, 120, "QUIT", 20, True)
-        self.back = Button((0, 0, 0), 650, 525, 50, 120, "BACK", 20, True)
-        self.arrowl = Button((0, 0, 0), 350, 115, 50, 50, " < ", 40, False)
-        self.arrowr = Button((0, 0, 0), 655, 115, 50, 50, " > ", 40, False)
+        # will need to split dictionary to specified screens
+        self.buttons = {
+            "play": Button((0, 0, 0), 350, 250, 50, 120, "PLAY", 20, True),
+            "option": Button((0, 0, 0), 350, 350, 50, 120, "OPTION", 20, True),
+            "quit": Button((0, 0, 0), 350, 450, 50, 120, "QUIT", 20, True),
+            "back": Button((0, 0, 0), 650, 525, 50, 120, "BACK", 20, True),
+            "arrowl": Button((0, 0, 0), 350, 115, 50, 50, " < ", 40, False),
+            "arrowr": Button((0, 0, 0), 655, 115, 50, 50, " > ", 40, False),
+            "arrow_bgm_l": Button((0, 0, 0), 350, 190, 50, 50, " < ", 40, False),
+            "arrow_bgm_r": Button((0, 0, 0), 655, 190, 50, 50, " > ", 40, False),
+            "arrow_sfx_l": Button((0, 0, 0), 350, 265, 50, 50, " < ", 40, False),
+            "arrow_sfx_r": Button((0, 0, 0), 655, 265, 50, 50, " > ", 40, False)
+        }
 
-    def on_event(self, mouse_press):
+    def on_click(self, mouse_press):
         """
         React to the given <mousepress> position to as appropriate to change
         the game state or to exit the game.
@@ -73,7 +81,7 @@ class Menu:
         pos = mouse_press.get_pos()
 
         if self._game.gamestate == STATE.Menu:
-            if self.play.is_hover(pos):
+            if self.buttons["play"].is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Game
                 # Clear the screen of game objects
@@ -82,17 +90,43 @@ class Menu:
                 # call the game board here once
                 # the game board is fully functional
 
-            if self.option.is_hover(pos):
+            if self.buttons["option"].is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Option
 
-            if self.quit.is_hover(pos):
+            if self.buttons["quit"].is_hover(pos):
                 self.sound.play()
                 self._game.running = False
 
         elif self._game.gamestate == STATE.Option:
 
-            if self.arrowl.is_hover(pos):
+            if self.buttons["arrow_bgm_l"].is_hover(pos):
+                self.sound.play()
+                reduce_vol = -0.1
+                curr_vol = pygame.mixer_music.get_volume() + reduce_vol
+                if curr_vol <= 0:
+                    pygame.mixer_music.set_volume(0)
+                elif curr_vol > 0:
+                    pygame.mixer_music.set_volume(curr_vol)
+
+            if self.buttons["arrow_bgm_r"].is_hover(pos):
+                self.sound.play()
+                pygame.mixer_music.set_volume(pygame.mixer_music.get_volume() + 0.1)
+
+            if self.buttons["arrow_sfx_l"].is_hover(pos):
+                self.sound.play()
+                reduce_vol = -0.1
+                curr_vol = self.sound.get_volume() + reduce_vol
+                if curr_vol <= 0:
+                    self.sound.set_volume(0)
+                elif curr_vol > 0:
+                    self.sound.set_volume(curr_vol)
+
+            if self.buttons["arrow_sfx_r"].is_hover(pos):
+                self.sound.play()
+                self.sound.set_volume(self.sound.get_volume() + 0.1)
+
+            if self.buttons["arrowl"].is_hover(pos):
                 self.sound.play()
                 if self._game.currtrack > 0:
                     self._game.set_bgm(self._game.tracks[self._game.currtrack - 1],
@@ -102,7 +136,7 @@ class Menu:
                                        len(self._game.tracks) - 1)
                 self.trackname = self.trackname[:-1] + str(self._game.currtrack)
 
-            if self.arrowr.is_hover(pos):
+            if self.buttons["arrowr"].is_hover(pos):
                 self.sound.play()
                 if self._game.currtrack < len(self._game.tracks) - 1:
                     self._game.set_bgm(self._game.tracks[self._game.currtrack + 1],
@@ -111,7 +145,7 @@ class Menu:
                     self._game.set_bgm(self._game.tracks[0], 0)
                 self.trackname = self.trackname[:-1] + str(self._game.currtrack)
 
-            if self.back.is_hover(pos):
+            if self.buttons["back"].is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Menu
 
@@ -123,7 +157,7 @@ class Menu:
         """
         for event in self._game.events:
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.on_event(pygame.mouse)
+                self.on_click(pygame.mouse)
 
     def render(self, screen: pygame.Surface):
         """
@@ -147,9 +181,9 @@ class Menu:
             screen.blit(title, ((self._game.width/2 - title.get_width()/2), 75))
 
             # Draw the Buttons
-            self.play.draw(screen)
-            self.option.draw(screen)
-            self.quit.draw(screen)
+            self.buttons["play"].draw(screen)
+            self.buttons["option"].draw(screen)
+            self.buttons["quit"].draw(screen)
 
         if self._game.gamestate == STATE.Option:
             # Create the font
@@ -157,10 +191,13 @@ class Menu:
             font2 = pygame.font.Font("./Assets/joystix_monospace.ttf", 25)
 
             # Instantiate the text and other objects
-            options = font.render("OPTIONS", 1, (255, 255, 255))
-            bgm = font2.render("SELECT BGM", 1, (255, 255, 255))
-            trknm = font2.render(self.trackname, 1, (255, 255, 255))
-
+            options = font.render("OPTION", 1, WHITE)
+            bgm = font2.render("SELECT BGM", 1, WHITE)
+            trknm = font2.render(self.trackname, 1, WHITE)
+            bgm_vol = font2.render("BGM VOLUME", 1, WHITE)
+            bgm_vol_num = font2.render(str(round(pygame.mixer_music.get_volume() * 10)), 1, WHITE)
+            sfx_vol = font2.render("SFX VOLUME", 1, WHITE)
+            sfx_vol_num = font2.render(str(round(self.sound.get_volume() * 10)), 1, WHITE)
 
             # Display the title and other objects
             screen.blit(self.transbg, (50, 100))
@@ -168,11 +205,19 @@ class Menu:
             screen.blit(options, ((self._game.width/2 - options.get_width()/2), 40))
             screen.blit(bgm, (75, 125))
             screen.blit(trknm, ((655 + 350 + 50)/2 - trknm.get_width()/2, 125))  #around 450
+            screen.blit(bgm_vol, (75, 200))
+            screen.blit(bgm_vol_num, ((655 + 350 + 165)/2 - trknm.get_width()/2, 200))
+            screen.blit(sfx_vol, (75, 275))
+            screen.blit(sfx_vol_num, ((655 + 350 + 165)/2 - trknm.get_width()/2, 275))
 
             # Draw button
-            self.back.draw(screen)
-            self.arrowl.draw(screen)
-            self.arrowr.draw(screen)
+            self.buttons["back"].draw(screen)
+            self.buttons["arrowl"].draw(screen)
+            self.buttons["arrowr"].draw(screen)
+            self.buttons["arrow_bgm_r"].draw(screen)
+            self.buttons["arrow_bgm_l"].draw(screen)
+            self.buttons["arrow_sfx_r"].draw(screen)
+            self.buttons["arrow_sfx_l"].draw(screen)
 
         if self._game.gamestate == STATE.End:
             screen.fill((0, 0, 0))
