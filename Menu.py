@@ -91,26 +91,25 @@ class Menu:
                 self._game.running = False
 
         elif self._game.gamestate == STATE.Option:
-            currtracknum = self._game.currtrack
 
             if self.arrowl.is_hover(pos):
                 self.sound.play()
-                if currtracknum > 0:
-                    self._game.set_bgm(self._game.tracks[currtracknum - 1],
-                                       currtracknum - 1)
-                elif currtracknum == 0:
+                if self._game.currtrack > 0:
+                    self._game.set_bgm(self._game.tracks[self._game.currtrack - 1],
+                                       self._game.currtrack - 1)
+                elif self._game.currtrack == 0:
                     self._game.set_bgm(self._game.tracks[-1],
                                        len(self._game.tracks) - 1)
-                self.trackname = self.trackname[:-1] + str(currtracknum)
+                self.trackname = self.trackname[:-1] + str(self._game.currtrack)
 
             if self.arrowr.is_hover(pos):
                 self.sound.play()
-                if currtracknum < len(self._game.tracks) - 1:
-                    self._game.set_bgm(self._game.tracks[currtracknum + 1],
-                                       currtracknum + 1)
-                elif currtracknum == len(self._game.tracks) - 1:
+                if self._game.currtrack < len(self._game.tracks) - 1:
+                    self._game.set_bgm(self._game.tracks[self._game.currtrack + 1],
+                                       self._game.currtrack + 1)
+                elif self._game.currtrack == len(self._game.tracks) - 1:
                     self._game.set_bgm(self._game.tracks[0], 0)
-                self.trackname = self.trackname[:-1] + str(currtracknum)
+                self.trackname = self.trackname[:-1] + str(self._game.currtrack)
 
             if self.back.is_hover(pos):
                 self.sound.play()

@@ -69,8 +69,11 @@ class Game:
         self.FPS = 30
         self.pressed = False
         self.tracks = [
+            "./Assets/audio/bgm/louie_zong_cat_toy.wav",
             "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
-            "./Assets/audio/bgm/louie_zong_cat_toy.wav"
+            "./Assets/audio/bgm/jayswanzone_musicpg.wav",
+            "./Assets/audio/bgm/nearstheme_deathnote.wav",
+            "./Assets/audio/bgm/snailshouse_ramune.wav"
         ]
 
         self.currtrack = 0
@@ -110,7 +113,7 @@ class Game:
         pygame.display.set_caption("Connect 2^2")
 
         # Starts the game audio
-        self.set_bgm(self.tracks[1], 1)
+        self.set_bgm(self.tracks[0], 0)
 
         # Sets the pygame display screen to self.size
         # and displays with either Hardware Surface or
