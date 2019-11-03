@@ -64,10 +64,7 @@ class Game:
         self.has_winner = False
         self.size = (self.width, self.height)
         self.screen = None
-        self.clock = pygame.time.Clock()
-        self.count = 0
-        self.FPS = 30
-        self.pressed = False
+        self.events = None
         self.tracks = [
             "./Assets/audio/bgm/louie_zong_cat_toy.wav",
             "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
@@ -169,15 +166,11 @@ class Game:
         self.on_init()
 
         while self.running:
-            for event in pygame.event.get():
+            self.events = pygame.event.get()
+            for event in self.events:
                 self.on_event(event)
-            self.count += 1
-            self.clock.tick(self.FPS)
             self.tick()
             self.render()
-            if self.count == int(self.FPS/2):
-                self.count = 0
-                self.pressed = False
         pygame.quit()
 
         # Have to add this line here to properly close the window w/ Macs
