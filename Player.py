@@ -1,6 +1,6 @@
 from __future__ import annotations
 import pygame
-
+import Board
 
 class Player:
     """
@@ -26,14 +26,15 @@ class Player:
         self.disc = disc
         self.icon = pygame.image.load(icon_file)
 
-    def make_move(self, col: int) -> None:
+    def make_move(self, board: Board, col: int) -> bool:
         """
         Let self make a move at column <col>.
 
+        :param board: the board to make a move on.:
         :param col: a column in the game board.:
-        :return:
+        :return: Whether the move was successfully made at <col>
         """
-        raise NotImplementedError
+        return board.move(self, col)
 
     def has_won(self) -> bool:
         """
