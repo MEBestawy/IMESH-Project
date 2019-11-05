@@ -81,7 +81,7 @@ class Board:
         A win would only be possible using the top-most disc of inputted col,
         nowhere else on the board should a win condition be possible.
 
-        :param col: The column that
+        :param col: The column where the move was just made
         :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
         """
         x, y = self.get_avail_row(col)+1, col

@@ -32,7 +32,7 @@ class Player:
 
         :param board: the board to make a move on.:
         :param col: a column in the game board.:
-        :return: Whether the move was successfully made at <col>
+        :return: Whether the move was successfully made at <col>.:
         """
         return board.move(self, col)
 
