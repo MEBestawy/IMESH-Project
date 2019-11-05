@@ -84,8 +84,31 @@ class Board:
         :param col: The column that
         :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
         """
-        # TODO: Build is method.
-        raise NotImplementedError
+        x, y = self.get_avail_row(col)+1, col
+        player = self.__grid[x][y]  # player who just moved
+        count = 1  # occurrences of curr in a row
+        directions = [(-1, 1), (1, 0), (1, 1), (0, 1)]
+        for d in directions:
+            drow, dcol = d
+            switched = False
+            while count < 4:
+                if 0 <= x + drow < self.__grid.shape[0] and \
+                        0 <= y + dcol < self.__grid.shape[1] and \
+                        self.__grid[x+drow][y+dcol] == player:
+                    count += 1
+                    x += drow
+                    y += dcol
+                else:
+                    x, y = self.get_avail_row(col)+1, col
+                    if not switched:
+                        drow, dcol = -drow, -dcol
+                        switched = True
+                    else:
+                        count = 1
+                        break
+            if count == 4:
+                return player
+        return EMPTY
 
     def valid_move(self, col: int) -> bool:
         """
