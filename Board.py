@@ -110,7 +110,7 @@ class Board:
                         break
             if count == 4:
                 return player
-        return EMPTY
+        return Board.EMPTY
 
     def valid_move(self, col: int) -> bool:
         """
