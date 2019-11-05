@@ -140,6 +140,16 @@ class Board:
         """
         return self.__grid.shape
 
+    def get_token(self, row: int, col: int) -> str:
+        """
+        Return the token at row, col in the board
+
+        :param row: specified row to look in
+        :param col: specified col to look in
+        :return: either Board.EMPTY, Board.P1, or Board.P2
+        """
+        return self.__grid[row][col]
+
     def load(self, board_lst: List) -> None:
         """
 
