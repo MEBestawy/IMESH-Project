@@ -77,8 +77,6 @@ class Board:
         exists. If a winner does not exist yet, the string representation for an
         empty slot would be returned.
 
-        This method is partially inspired by CSC207 Assignment 1
-
         Precondition:
         A win would only be possible using the top-most disc of inputted col,
         nowhere else on the board should a win condition be possible.
