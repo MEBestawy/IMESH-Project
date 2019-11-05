@@ -148,7 +148,8 @@ class Board:
         :param col: specified col to look in
         :return: either Board.EMPTY, Board.P1, or Board.P2
         """
-        return self.__grid[row][col]
+        if self.valid_move(col) and (0 <= row <= self.__grid.shape[0]):
+            return self.__grid[row][col]
 
     def load(self, board_lst: List) -> None:
         """
