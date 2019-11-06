@@ -24,6 +24,7 @@ class Board:
     __avail_pos: A dictionary containing which rows a player can place a token
                  depending on the column. This dictionary maps column indices
                  as keys to values of rows of potential next moves.
+    __winner: The winner of the game. Takes on a value of a player or empty
 
     ===Static Variables===
     P1: The string representation of the first player.
@@ -47,6 +48,7 @@ class Board:
         :param length: The length (vertical) size of board
         :param width: The width (horizontal) size of board
         """
+        self.__winner = Board.EMPTY
         self.__grid = np.full(shape=(length, width), fill_value=Board.EMPTY)
 
         # Initializing the dictionary containing where moves could be made.
@@ -68,25 +70,32 @@ class Board:
             if player == Board.P1 or player == Board.P2:
                 self.__grid[self.get_avail_row(col)][col] = player
                 self.__avail_pos[col] -= 1
+                self.find_winner(col)
                 return True
         return False
 
-    def get_winner(self, col: int) -> str:
+    def get_winner(self) -> str:
         """
-        After a player has moved, this method gets the winner, if a winner
-        exists. If a winner does not exist yet, the string representation for an
-        empty slot would be returned.
+
+        :return:
+        """
+        return self.__winner
+
+    def find_winner(self, col: int) -> None:
+        """
+        After a player has moved, this method finds the winner, if a winner
+        exists.
 
         Precondition:
         A win would only be possible using the top-most disc of inputted col,
         nowhere else on the board should a win condition be possible.
 
         :param col: The column where the move was just made
-        :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
         """
         x, y = self.get_avail_row(col) + 1, col
         if self.get_token(x, y) == Board.EMPTY:
-            return Board.EMPTY
+            self.__winner = Board.EMPTY
+            return
         player = self.get_token(x, y)  # player who just moved
         count = 1  # occurrences of player in a row
         directions = [(1, -1), (1, 0), (1, 1), (0, 1)]
@@ -109,8 +118,9 @@ class Board:
                         count = 1
                         break
             if count == 4:
-                return player
-        return Board.EMPTY
+                self.__winner = player
+                return
+        self.__winner = Board.EMPTY
 
     def valid_move(self, col: int) -> bool:
         """
@@ -212,6 +222,7 @@ class Board:
 
 if __name__ == "__main__":
     board = Board()
+    print(board.get_winner())
     b2 = Board()
     print(board == b2)
     board.move(Board.P1, 3)
@@ -219,6 +230,8 @@ if __name__ == "__main__":
     board.move(Board.P1, 3)
     board.move(Board.P2, 3)
     board.move(Board.P1, 0)
+    print(board.get_winner())
+    print(board.get_winner())
     board.move("R", 3)
     board.move(Board.P2, 3)
     board.move(Board.P1, 3)
@@ -230,5 +243,6 @@ if __name__ == "__main__":
     board.load(["-------","-------","-------","XXXXXXX","XXXXXXX","XXXXXXX"])
     print(board)
     print(board.move(Board.P1, 5))
+    print(board.get_winner())
     print(board)
 
