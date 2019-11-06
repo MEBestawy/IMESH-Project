@@ -84,23 +84,25 @@ class Board:
         :param col: The column where the move was just made
         :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
         """
-        x, y = self.get_avail_row(col), col
-        player = self.__grid[x][y]  # player who just moved
-        count = 1  # occurrences of curr in a row
-        directions = [(-1, 1), (1, 0), (1, 1), (0, 1)]
+        x, y = self.get_avail_row(col) + 1, col
+        if self.get_token(x, y) == Board.EMPTY:
+            return Board.EMPTY
+        player = self.get_token(x, y)  # player who just moved
+        count = 1  # occurrences of player in a row
+        directions = [(1, -1), (1, 0), (1, 1), (0, 1)]
         for d in directions:
             drow, dcol = d
             switched = False
             while count < 4:
                 if 0 <= x + drow < self.__grid.shape[0] and \
                         0 <= y + dcol < self.__grid.shape[1] and \
-                        self.__grid[x+drow][y+dcol] == player:
+                        self.get_token(x + drow, y + dcol) == player:
                     count += 1
                     x += drow
                     y += dcol
                 else:
-                    x, y = self.get_avail_row(col)+1, col
                     if not switched:
+                        x, y = self.get_avail_row(col) + 1, col
                         drow, dcol = -drow, -dcol
                         switched = True
                     else:
@@ -146,7 +148,7 @@ class Board:
         :param col: specified col to look in
         :return: either Board.EMPTY, Board.P1, or Board.P2
         """
-        if (0 <= col <= self.__grid.shape[1]) and (0 <= row <= self.__grid.shape[0]):
+        if (0 <= col < self.__grid.shape[1]) and (0 <= row < self.__grid.shape[0]):
             return self.__grid[row][col]
         else:
             return Board.EMPTY
