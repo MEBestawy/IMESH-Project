@@ -86,7 +86,7 @@ class Board:
         :param col: The column that
         :return: The winner, either P1, P2, or EMPTY if there is no winner yet.
         """
-        x, y = self.get_avail_row(col)+1, col
+        x, y = self.get_avail_row(col), col
         player = self.__grid[x][y]  # player who just moved
         count = 1  # occurrences of curr in a row
         directions = [(-1, 1), (1, 0), (1, 1), (0, 1)]
@@ -148,8 +148,10 @@ class Board:
         :param col: specified col to look in
         :return: either Board.EMPTY, Board.P1, or Board.P2
         """
-        if self.valid_move(col) and (0 <= row <= self.__grid.shape[0]):
+        if (0 <= col <= self.__grid.shape[1]) and (0 <= row <= self.__grid.shape[0]):
             return self.__grid[row][col]
+        else:
+            return Board.EMPTY
 
     def load(self, board_lst: List) -> None:
         """
