@@ -10,13 +10,7 @@ class GameStorage:
 
     """
     __instance = None
-
-    def __init__(self):
-        try:
-            if self.__instance and not self.data_dict:
-                self.data_dict = {}
-        except AttributeError:
-            self.data_dict = None
+    data_dict = {}
 
     @classmethod
     def get_storage(cls) -> GameStorage:
@@ -48,10 +42,37 @@ class GameStorage:
             self.data_dict[int(line.get("ID"))] = \
                 {"CurrentTurn": line.get("CurrentTurn"),
                  "BGM": line.get("BGM"),
-                 "Board": load_board(line.get("Board"))}
+                 "Board": _load_board(line.get("Board"))}
+
+    def save_game(self) -> None:
+        """
+
+        :return:
+        """
+        # TODO: Ask about this!!!
 
 
-def load_board(str_board: str) -> Board:
+def _convert_board_to_format(board: Board) -> str:
+    """
+
+    :param board:
+    :return:
+    """
+    shape = board.get_grid_size()
+    result = ""
+
+    # Going row by row
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            result += board.get_token(j, i)
+
+        if i < shape[0] - 1:
+            result += "/"
+    print(board, result)
+    return result
+
+
+def _load_board(str_board: str) -> Board:
     """
 
     :param str_board:
@@ -64,13 +85,16 @@ def load_board(str_board: str) -> Board:
 
 
 if __name__ == "__main__":
+    a4 = GameStorage()
     a1 = GameStorage.get_storage()
     a2 = GameStorage.get_storage()
     a3 = GameStorage.get_storage()
-    print(a1.data_dict)
+#    print(a1.data_dict)
+    print(a4 is a1)
+    print(a1 is a2 is a3)
 
     a1.read("./Assets/History.csv")
-    print(a3.data_dict)
-    print(a2.data_dict[0]['Board'])
+    #print(a3.data_dict)
+    _convert_board_to_format(a2.data_dict[0]['Board'])
     print(a1 == a2 == a3)
 
