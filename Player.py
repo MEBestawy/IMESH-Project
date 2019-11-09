@@ -36,9 +36,11 @@ class Player:
         """
         return board.move(self, col)
 
-    def has_won(self) -> bool:
+    def has_won(self, board: Board) -> bool:
         """
-        Determine whether the player has won the game
+        Determine whether the player has won the game.
+
+        :param board: the board to check whether self has won
         :return: True or false based on whether the player has won the game
         """
-        raise NotImplementedError
+        return board.get_winner() == self.disc
