@@ -1,30 +1,33 @@
 from __future__ import annotations
 import pygame
 import Board
+from GameObject import GameObject
 
-class Player:
+
+class Player(GameObject):
     """
     This class represents one of the two players that will play
     the Connect 2^2 game.
 
     ===Public Attributes===
 
-    disc: the disc that Player uses when making a move.
-
-    icon: the image representing this player
-
     """
 
     disc: str
     icon: pygame.Surface
-    win_count: int
+    x: int
+    y: int
+    offset_x: int
 
-    def __init__(self, disc: str, icon_file: str) -> None:
+    def __init__(self, turn: int, x: int, y: int) -> None:
         """
         Instantiate a Player object, with their respective
         """
-        self.disc = disc
-        self.icon = pygame.image.load(icon_file)
+        # self.icon = pygame.image.load(icon_file)
+        super().__init__(x, y)
+        self.offset_x = -25
+        self.turn = turn
+        self.vel_y = 30
 
     def make_move(self, board: Board, col: int) -> bool:
         """
@@ -44,3 +47,14 @@ class Player:
         :return: True or false based on whether the player has won the game
         """
         return board.get_winner() == self.disc
+
+    def tick(self):
+        self.y += self.vel_y
+
+    def render(self, screen: pygame.Surface):
+
+        pygame.draw.rect(screen, (255, 255, 255), (self.x + self.offset_x, self.y, 50, 50))
+        return None
+
+    def collisions(self):
+        return None

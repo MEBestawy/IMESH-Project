@@ -2,6 +2,7 @@ import pygame
 from State import STATE
 from Button import Button
 from Board import Board
+from Player import Player
 
 
 BLACK = (0, 0, 0)
@@ -21,21 +22,25 @@ class DisplayBoard:
     """
     def __init__(self, game, handler, board):
         self.game = game
-        
+
         self.board = Board()
-        
+
         self.handler = handler
         self.buttons = []
-        
+
         # Who's turn it is in the game:
         self.turn = 0
 
     def on_event(self, mousepress):
         # print(pygame.mouse.get_pos())
         selected_column = self.get_column(mousepress)
+        xcoord = self.get_center_column(mousepress)
+        ycoord = mousepress.get_pos()[1]
 
-        self.move_next(selected_column)
-        
+        if self.move_next(selected_column):
+            player = Player(self.turn, xcoord, ycoord)
+            self.handler.add_object(player)
+
 
     def tick(self):
         for event in self.game.events:
@@ -43,10 +48,10 @@ class DisplayBoard:
                 self.on_event(pygame.mouse)
 
     def render(self, display):
-        
+
         self.update_game(display)
 
-        
+
     def update_game(self, display):
         # CHANGING THE GAME BACKGROUND
         display.fill((255, 255, 255))
@@ -61,10 +66,10 @@ class DisplayBoard:
         # Adding a Background
         board_background = pygame.image.load('./Assets/BOARD.png').convert()
         display.blit(board_background, (0, 0))
-        
+
         # The matrix representation of the grid
         grid = self.board.get_grid()
-        
+
         # if there is a winner, switch to the end screen
         if self.board.get_winner() != '-':
             self.game.gamestate = STATE.End
@@ -76,63 +81,98 @@ class DisplayBoard:
         for column in range(NUMBEROFCOLUMNS):
 
             for row in range(NUMBEROFROWS):
-                
+
                 if grid[row][column] == 'X':
                     pygame.draw.circle(display,
                                        BLACK,
                                        (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
                                         HOLE_SIZE)
-                    
+
                 elif grid[row][column] == 'O':
-                    
+
                     pygame.draw.circle(display,
                                        NAVY,
                                        (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
                                         HOLE_SIZE)
- 
+
                 else:
                     pygame.draw.circle(display,
                                        LIGHTERBLUE,
                                        (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
                                         HOLE_SIZE)
-                
+
         font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
-        
-        
+
+
         if self.turn == 0:
             text = font.render("Player 1's Turn.", True, WHITE, BLACK)
         elif self.turn == 1:
             text = font.render("Player 2's Turn.", True, WHITE, BLACK)
-            
-            
+
+
         textBox = text.get_rect(center=(400,560))
 
         display.blit(text, textBox)
-        
-        pygame.display.flip()
-        
 
-    def move_next(self, column: int) -> None:
+        pygame.display.flip()
+
+
+    def move_next(self, column: int) -> bool:
         """
         Makes a move depending on who's turn it is. Doesn't change the turn
         if the player's input was invalid.
         """
-        
+
         if self.turn == 0:
-            
+
             if self.board.move(self.board.P1, column):
                 self.turn += 1
-            
+                return True
+
         elif self.turn == 1:
-            
+
             if self.board.move(self.board.P2, column):
                 self.turn -= 1
-                
-    
+                return True
+        return False
+
+    def get_center_column(self, mousepress):
+        # Will need to refactor this.
+        xposition = mousepress.get_pos()[0]
+
+        if 161 <= xposition <= 217:
+            return 189
+
+        elif 231 <= xposition <= 287:
+            return 259
+
+        elif 302 <= xposition <= 358:
+            return 330
+
+        elif 371 <= xposition <= 427:
+            return 399
+
+        elif 441 <= xposition <= 497:
+            return 469
+
+        elif 511 <= xposition <= 567:
+            return 539
+
+        elif 581 <= xposition <= 637:
+            return 609
+
+        else:
+            return -1
+
+
     def get_column(self, mousepress):
         # Will need to refactor this.
         position = mousepress.get_pos()[0]
-        
+        yposition = mousepress.get_pos()[1]
+
+        if yposition > 500:
+            return -1
+
         if 161 <= position <= 217:
             return 0
 
