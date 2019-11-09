@@ -44,10 +44,10 @@ class DisplayBoard:
 
     def render(self, display):
         
-        self.start_game(display)
+        self.update_game(display)
 
         
-    def start_game(self, display):
+    def update_game(self, display):
         # CHANGING THE GAME BACKGROUND
         display.fill((255, 255, 255))
 
@@ -64,6 +64,10 @@ class DisplayBoard:
         
         # The matrix representation of the grid
         grid = self.board.get_grid()
+        
+        # if there is a winner, switch to the end screen
+        if self.board.get_winner() != '-':
+            self.game.gamestate = STATE.End
 
         # Creates the pyGame Board with corresponding slots and holes from the matrix board representation.
         # This strategy for creating the board was inspired by a tutorial on freeCodeCamp.org.
