@@ -69,7 +69,7 @@ class Game:
             "./Assets/audio/bgm/snailshouse_ramune.wav"
         ]
 
-        self.winner = "1"
+        self.winner = "-"
         self.currtrack = 0
         # Initializes the classes for that the game requires to run and update
         # the game.

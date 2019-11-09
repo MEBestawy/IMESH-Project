@@ -145,6 +145,8 @@ class Menu:
         elif self._game.gamestate == STATE.End:
             if self.buttons["return"].is_hover(pos):
                 self.sound.play()
+                self._game.set_winner("-")
+                print(self._game.get_winner())
                 self._game.gamestate = STATE.Menu
 
     def tick(self):
@@ -222,7 +224,19 @@ class Menu:
             font2 = pygame.font.Font("./Assets/joystix_monospace.ttf", 30)
             gameover = font.render("GAME OVER", 1, WHITE)
 
-            winner = font2.render("Player " + self._game.get_winner()  + " WON", 1, WHITE)
+            if self._game.get_winner() == 'X':
+                
+                winner = font2.render("Player 1 WON!", 1, WHITE)
+                
+            elif self._game.get_winner() == 'O':
+                
+                winner = font2.render("Player 2 WON!", 1, WHITE)
+            
+            else:
+                
+                winner = font2.render("TIE!", 1, WHITE)
+            
+            
             screen.blit(gameover, ((self._game.width/2 - gameover.get_width()/2), 70))
             screen.blit(winner, ((self._game.width/2 - winner.get_width()/2), 275))
 

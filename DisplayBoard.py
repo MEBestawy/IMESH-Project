@@ -1,8 +1,6 @@
 import pygame
 from State import STATE
-from Button import Button
 from Board import Board
-from Player import Player
 
 
 BLACK = (0, 0, 0)
@@ -12,7 +10,8 @@ LIGHTBLUE = (183, 208, 218)
 BLUE = (65, 105, 225)
 GREY = (100, 118, 141)
 LIGHTERBLUE = (217, 233, 239)
-NAVY = (0, 76, 153)
+NAVY = (71, 124, 163)
+DARKGREY = (50, 50, 50)
 
 
 class DisplayBoard:
@@ -20,27 +19,21 @@ class DisplayBoard:
     Connect 2^2 main game visualizer.
     Acts as the controller to Board.py, and updates Game.py.
     """
-    def __init__(self, game, handler, board):
+    def __init__(self, game, board):
         self.game = game
 
         self.board = Board()
-
-        self.handler = handler
-        self.buttons = []
 
         # Who's turn it is in the game:
         self.turn = 0
 
     def on_event(self, mousepress):
-        # print(pygame.mouse.get_pos())
         selected_column = self.get_column(mousepress)
-        xcoord = self.get_center_column(mousepress)
-        ycoord = mousepress.get_pos()[1]
+        
+        #print(selected_column)
+        #print(mousepress.get_pos())
 
-        if self.move_next(selected_column):
-            player = Player(self.turn, xcoord, ycoord)
-            self.handler.add_object(player)
-
+        self.move_next(selected_column)
 
     def tick(self):
         for event in self.game.events:
@@ -54,52 +47,67 @@ class DisplayBoard:
 
     def update_game(self, display):
         # CHANGING THE GAME BACKGROUND
-        display.fill((255, 255, 255))
 
 
-        SLOTSIZE = 75
-        HOLE_SIZE = int(SLOTSIZE / 2) - 10
+        SLOT_SIZE = 75
+        HOLE_SIZE = 25
 
         NUMBEROFCOLUMNS = self.board.get_grid_size()[1]
         NUMBEROFROWS = self.board.get_grid_size()[0]
 
         # Adding a Background
-        board_background = pygame.image.load('./Assets/BOARD.png').convert()
-        display.blit(board_background, (0, 0))
+        board_background = pygame.image.load('./Assets/BOARD2.png').convert()
+
+        display.blit(board_background, (0,0))
+        
+        
+        """
+        GRID COORDINATES OF Board in justBoard.png:
+            
+        topLeft = (138, 75)
+        bottomLeft = (138, 525)
+        
+        topRight = (663, 75)
+        bottomRight = (663, 525)
+        """
 
         # The matrix representation of the grid
         grid = self.board.get_grid()
 
         # if there is a winner, switch to the end screen
         if self.board.get_winner() != '-':
+            
+            self.game.set_winner(self.board.get_winner())
+            self.reset_board()
             self.game.gamestate = STATE.End
 
         # Creates the pyGame Board with corresponding slots and holes from the matrix board representation.
         # This strategy for creating the board was inspired by a tutorial on freeCodeCamp.org.
         # Video URL: https://www.youtube.com/watch?v=XpYz-q1lxu8
-
         for column in range(NUMBEROFCOLUMNS):
-
+            
             for row in range(NUMBEROFROWS):
-
+                
                 if grid[row][column] == 'X':
                     pygame.draw.circle(display,
-                                       BLACK,
-                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
-                                        HOLE_SIZE)
-
-                elif grid[row][column] == 'O':
-
+                                       DARKGREY,
+                                       (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
+                                       HOLE_SIZE)
+                    
+                    
+                elif grid[row][column] == 'O':                
                     pygame.draw.circle(display,
                                        NAVY,
-                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
-                                        HOLE_SIZE)
-
-                else:
+                                       (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
+                                       HOLE_SIZE)
+                    
+                    
+                else:    
                     pygame.draw.circle(display,
-                                       LIGHTERBLUE,
-                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
-                                        HOLE_SIZE)
+                                       LIGHTBLUE,
+                                       (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
+                                       HOLE_SIZE)
+                                       
 
         font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
 
@@ -136,67 +144,44 @@ class DisplayBoard:
                 return True
         return False
 
-    def get_center_column(self, mousepress):
-        # Will need to refactor this.
-        xposition = mousepress.get_pos()[0]
 
-        if 161 <= xposition <= 217:
-            return 189
-
-        elif 231 <= xposition <= 287:
-            return 259
-
-        elif 302 <= xposition <= 358:
-            return 330
-
-        elif 371 <= xposition <= 427:
-            return 399
-
-        elif 441 <= xposition <= 497:
-            return 469
-
-        elif 511 <= xposition <= 567:
-            return 539
-
-        elif 581 <= xposition <= 637:
-            return 609
-
+    def get_column(self, mousepress) -> int:
+        
+        """
+        Returns which column the player picked, or -1 if they picked an invalid
+        move.
+        
+        """
+        
+        x_position = mousepress.get_pos()[0]
+        y_position = mousepress.get_pos()[1]
+        
+        # Invalid Y Coordinates on the Board
+        if y_position > 500:
+            return -1
+        
+        # Valid X Coordinates of the Board
+        if 138 <= x_position <= 663:
+            
+            width = 663-138
+            
+            width_of_columns = width // 7
+            
+            return (x_position-138)//width_of_columns
+          
+        # Invalid X Coordinate
         else:
             return -1
-
-
-    def get_column(self, mousepress):
-        # Will need to refactor this.
-        position = mousepress.get_pos()[0]
-        yposition = mousepress.get_pos()[1]
-
-        if yposition > 500:
-            return -1
-
-        if 161 <= position <= 217:
-            return 0
-
-        elif 231 <= position <= 287:
-            return 1
-
-        elif 302 <= position <= 358:
-            return 2
-
-        elif 371 <= position <= 427:
-            return 3
-
-        elif 441 <= position <= 497:
-            return 4
-
-        elif 511 <= position <= 567:
-            return 5
-
-        elif 581 <= position <= 637:
-            return 6
-
-        else:
-            return -1
-
+        
+        
+    def reset_board(self) -> None:
+        
+        # Clear Board to a new Board
+        self.board = Board()
+        
+        # Reset Turn
+        self.turn = 0
+        
 
 
 
