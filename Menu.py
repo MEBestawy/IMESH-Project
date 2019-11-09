@@ -2,7 +2,6 @@ import pygame
 from State import STATE
 from Button import Button
 import Game
-import Handler
 
 WHITE = (255, 255, 255)
 
@@ -14,8 +13,6 @@ class Menu:
     ===Private Attributes===
 
     _game: reference of the Game class so that Menu can update the game
-
-    _handler: reference of the Handler class so that Menu can call the Handler
 
     ===Public Attributes===
 
@@ -30,7 +27,6 @@ class Menu:
     """
     # Private Instance Attributes
     _game: Game
-    _handler: Handler
 
     # Public Instance Attributes
     play: Button
@@ -38,15 +34,13 @@ class Menu:
     quit: Button
     back: Button
 
-    def __init__(self, game, handler):
+    def __init__(self, game):
         """
-        Initializes a Menu that has the game, handler, and buttons.
+        Initializes a Menu that has the game, and buttons.
 
         :param game: the main game class
-        :param handler: the handler
         """
         self._game = game
-        self._handler = handler
         self._xpos = 0
         self.sound = pygame.mixer.Sound("./Assets/audio/sfx/click.wav")
         self.trackname = "track_" + str(self._game.currtrack)
@@ -70,7 +64,8 @@ class Menu:
             "arrow_bgm_l": Button((0, 0, 0), 350, 190, 50, 50, " < ", 40, False),
             "arrow_bgm_r": Button((0, 0, 0), 655, 190, 50, 50, " > ", 40, False),
             "arrow_sfx_l": Button((0, 0, 0), 350, 265, 50, 50, " < ", 40, False),
-            "arrow_sfx_r": Button((0, 0, 0), 655, 265, 50, 50, " > ", 40, False)
+            "arrow_sfx_r": Button((0, 0, 0), 655, 265, 50, 50, " > ", 40, False),
+            "return": Button((0, 0, 0), 350, 450, 50, 120, "RETURN", 20, True),
         }
 
     def on_click(self, mouse_press):
@@ -84,8 +79,6 @@ class Menu:
             if self.buttons["play"].is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Game
-                # Clear the screen of game objects
-                self._handler.clear_all()
 
                 # call the game board here once
                 # the game board is fully functional
@@ -146,6 +139,11 @@ class Menu:
                 self.trackname = self.trackname[:-1] + str(self._game.currtrack)
 
             if self.buttons["back"].is_hover(pos):
+                self.sound.play()
+                self._game.gamestate = STATE.Menu
+
+        elif self._game.gamestate == STATE.End:
+            if self.buttons["return"].is_hover(pos):
                 self.sound.play()
                 self._game.gamestate = STATE.Menu
 
@@ -220,7 +218,15 @@ class Menu:
             self.buttons["arrow_sfx_l"].draw(screen)
 
         if self._game.gamestate == STATE.End:
-            screen.fill((0, 0, 0))
+            font = pygame.font.Font("./Assets/joystix_monospace.ttf", 50)
+            font2 = pygame.font.Font("./Assets/joystix_monospace.ttf", 30)
+            gameover = font.render("GAME OVER", 1, WHITE)
+
+            winner = font2.render("Player " + self._game.get_winner()  + " WON", 1, WHITE)
+            screen.blit(gameover, ((self._game.width/2 - gameover.get_width()/2), 70))
+            screen.blit(winner, ((self._game.width/2 - winner.get_width()/2), 275))
+
+            self.buttons["return"].draw(screen)
 
 
 

@@ -1,7 +1,6 @@
 import pygame
 from pygame import mouse
 import os
-import Handler
 import Menu
 import DisplayBoard
 import Board
@@ -29,8 +28,6 @@ class Game:
 
     board: The matrix representation of our board in the console.
 
-    handler: the game object handler
-
     menu: the game menu
 
     displayboard: the Connect 2^2 play screen
@@ -47,7 +44,6 @@ class Game:
     size: Tuple[int, int]
     screen: Optional[pygame.Surface]
     board: Board
-    handler: Handler
     menu: Menu
     displayboard: DisplayBoard
     gamestate: STATE
@@ -73,6 +69,7 @@ class Game:
             "./Assets/audio/bgm/snailshouse_ramune.wav"
         ]
 
+        self.winner = "1"
         self.currtrack = 0
         # Initializes the classes for that the game requires to run and update
         # the game.
@@ -80,9 +77,8 @@ class Game:
         pygame.mixer.init(44100, -16, 2, 512)
 
         self.board = Board.Board()
-        self.handler = Handler.Handler()
-        self.menu = Menu.Menu(self, self.handler)
-        self.displayboard = DisplayBoard.DisplayBoard(self, self.handler, self.board)
+        self.menu = Menu.Menu(self)
+        self.displayboard = DisplayBoard.DisplayBoard(self, self.board)
 
         # Sets the game state.
         # By default, the game state starts with the menu state.
@@ -126,6 +122,16 @@ class Game:
         if event.type == pygame.QUIT:
             self.running = False
 
+    def get_winner(self):
+        """
+        Get the winner of the game.
+        """
+        return self.winner
+
+    def set_winner(self, winner):
+        self.winner = winner
+
+
     def tick(self):
         """
         Animate all game objects in the game as appropriate to
@@ -134,13 +140,11 @@ class Game:
         """
         if self.gamestate == STATE.Game:
             self.displayboard.tick()
-            self.handler.tick()
             if self.has_winner:
                 self.gamestate = STATE.End
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
-            self.handler.tick()
             self.menu.tick()
 
     def render(self):
@@ -150,11 +154,9 @@ class Game:
         """
         if self.gamestate == STATE.Game:
             self.displayboard.render(self.screen)
-            self.handler.render(self.screen)
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
-            self.handler.render(self.screen)
             self.menu.render(self.screen)
 
         pygame.display.flip()
