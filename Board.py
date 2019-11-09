@@ -179,6 +179,18 @@ class Board:
             while j > -1 and self.__grid[j][i] != Board.EMPTY:
                 j -= 1
             self.__avail_pos[i] = j
+            
+    def get_grid(self) -> List[List[str]]:
+        """
+        Returns the matrix representation of the board for the game.
+        """
+        
+        grid = []
+        
+        for row in self._Board__grid:
+            grid.append(list(row))
+            
+        return grid
 
     def __str__(self):
         """

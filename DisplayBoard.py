@@ -1,6 +1,7 @@
 import pygame
 from State import STATE
 from Button import Button
+from Board import Board
 
 
 BLACK = (0, 0, 0)
@@ -19,17 +20,23 @@ class DisplayBoard:
     """
     def __init__(self, game, handler, board):
         self.game = game
+        
+        self.board = Board()
+        
         self.handler = handler
         self.buttons = []
-
-        self.board = board
+        
+        # Who's turn it is in the game:
+        self.turn = 0
 
     def on_event(self, mousepress):
         # print(pygame.mouse.get_pos())
         selected_column = self.get_column(mousepress)
 
-        if selected_column >= 0:
-            print("Selected column: " + str(selected_column))
+        self.move_next(selected_column)
+        
+        self.update_game()
+        
 
     def tick(self):
         for event in self.game.events:
@@ -37,6 +44,11 @@ class DisplayBoard:
                 self.on_event(pygame.mouse)
 
     def render(self, display):
+        
+        self.start_game(display)
+
+        
+    def start_game(self, display):
         # CHANGING THE GAME BACKGROUND
         display.fill((255, 255, 255))
 
@@ -63,11 +75,43 @@ class DisplayBoard:
                                    LIGHTERBLUE,
                                    (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
                                     HOLE_SIZE)
+                
+        font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
+        text = font.render("Turn.", True, WHITE, BLACK)
+        textBox = text.get_rect(center=(400,560))
 
+        display.blit(text, textBox)
+        
+        pygame.display.flip()
+        
+    def update_game(self):
+        
+        grid = self.board.get_grid()
+                    
+        print(self.board)
+        
+
+    def move_next(self, column: int) -> None:
+        """
+        Makes a move depending on who's turn it is. Doesn't change the turn
+        if the player's input was invalid.
+        """
+        
+        if self.turn == 0:
+            
+            if self.board.move(self.board.P1, column):
+                self.turn += 1
+            
+        elif self.turn == 1:
+            
+            if self.board.move(self.board.P2, column):
+                self.turn -= 1
+                
+    
     def get_column(self, mousepress):
         # Will need to refactor this.
         position = mousepress.get_pos()[0]
-
+        
         if 161 <= position <= 217:
             return 0
 
@@ -91,7 +135,6 @@ class DisplayBoard:
 
         else:
             return -1
-
 
 
 
