@@ -11,12 +11,13 @@ LIGHTBLUE = (183, 208, 218)
 BLUE = (65, 105, 225)
 GREY = (100, 118, 141)
 LIGHTERBLUE = (217, 233, 239)
+NAVY = (0, 76, 153)
 
 
 class DisplayBoard:
     """
     Connect 2^2 main game visualizer.
-    Acts as the controller to Board.py, and updates Game.py
+    Acts as the controller to Board.py, and updates Game.py.
     """
     def __init__(self, game, handler, board):
         self.game = game
@@ -34,8 +35,6 @@ class DisplayBoard:
         selected_column = self.get_column(mousepress)
 
         self.move_next(selected_column)
-        
-        self.update_game()
         
 
     def tick(self):
@@ -62,6 +61,9 @@ class DisplayBoard:
         # Adding a Background
         board_background = pygame.image.load('./Assets/BOARD.png').convert()
         display.blit(board_background, (0, 0))
+        
+        # The matrix representation of the grid
+        grid = self.board.get_grid()
 
         # Creates the pyGame Board with corresponding slots and holes from the matrix board representation.
         # This strategy for creating the board was inspired by a tutorial on freeCodeCamp.org.
@@ -70,25 +72,40 @@ class DisplayBoard:
         for column in range(NUMBEROFCOLUMNS):
 
             for row in range(NUMBEROFROWS):
-
-                pygame.draw.circle(display,
-                                   LIGHTERBLUE,
-                                   (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
-                                    HOLE_SIZE)
+                
+                if grid[row][column] == 'X':
+                    pygame.draw.circle(display,
+                                       BLACK,
+                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
+                                        HOLE_SIZE)
+                    
+                elif grid[row][column] == 'O':
+                    
+                    pygame.draw.circle(display,
+                                       NAVY,
+                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
+                                        HOLE_SIZE)
+ 
+                else:
+                    pygame.draw.circle(display,
+                                       LIGHTERBLUE,
+                                       (190 + (column * (SLOTSIZE-5)), 122 + (row * (SLOTSIZE-5))),
+                                        HOLE_SIZE)
                 
         font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
-        text = font.render("Turn.", True, WHITE, BLACK)
+        
+        
+        if self.turn == 0:
+            text = font.render("Player 1's Turn.", True, WHITE, BLACK)
+        elif self.turn == 1:
+            text = font.render("Player 2's Turn.", True, WHITE, BLACK)
+            
+            
         textBox = text.get_rect(center=(400,560))
 
         display.blit(text, textBox)
         
         pygame.display.flip()
-        
-    def update_game(self):
-        
-        grid = self.board.get_grid()
-                    
-        print(self.board)
         
 
     def move_next(self, column: int) -> None:
