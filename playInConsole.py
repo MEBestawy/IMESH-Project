@@ -1,6 +1,6 @@
 from Board import Board 
 
-class playInConsole:
+class PlayInConsole:
     
     """
     
@@ -68,5 +68,5 @@ class playInConsole:
         
         
 if __name__ == "__main__":
-    game = playInConsole()
+    game = PlayInConsole()
     game.play()
