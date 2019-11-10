@@ -10,7 +10,6 @@ class playInConsole:
     ===Public Attributes===
     board: The board we are playing the Connect 2^2 game in.
     turn: Who's turn it is in the game.
-    
     """
     
     board: Board

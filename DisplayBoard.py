@@ -2,7 +2,7 @@ import pygame
 from State import STATE
 from Board import Board
 
-
+# GLOBAL variables for RGB of colours on the board
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (150, 150, 150)
@@ -16,53 +16,71 @@ DARKGREY = (50, 50, 50)
 
 class DisplayBoard:
     """
-    Connect 2^2 main game visualizer.
-    Acts as the controller to Board.py, and updates Game.py.
+    The main Connect 2^2 game visualizer.
+    
+    This is where each player can play the game, until someone wins.  
+    
+    The class acts as the controller to Board.py, and updates Game.py.
+    
+    === Public Attributes ===
+    
+    board: The board where the Connect 2^2 game is being played. 
+    
+    turn: Who's turn it is in the game. The first player is represented with 
+    a 0, and the 2nd with a 1. 
+    
+    === Private Attributes === 
+    _game: This represents the main game loop. In other words, this is the 
+    pyGame window that contains the main menu, this gameBoard and our endscreen. 
+    
     """
     def __init__(self, game, board):
-        self.game = game
+        """
+        Initializes the game with a board and displays this in pyGame.
+        """
+        self._game = game
 
         self.board = Board()
 
-        # Who's turn it is in the game:
         self.turn = 0
-
-    def on_event(self, mousepress):
-        selected_column = self.get_column(mousepress)
         
-        #print(selected_column)
-        #print(mousepress.get_pos())
 
+    def on_event(self, mousepress) -> None:
+        """
+        After each mousepress, this method handles what to do. 
+        """
+        selected_column = self.get_column(mousepress)
         self.move_next(selected_column)
 
     def tick(self):
-        for event in self.game.events:
+        """
+        This method detects any mouse clicks on the pyGame window. 
+        """
+        for event in self._game.events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.on_event(pygame.mouse)
+                pygame.mixer.Sound("./Assets/audio/sfx/click.wav").play()
 
-    def render(self, display):
+    def render(self, display: pygame.Surface)-> None:
+        """
+        Renders the changes on the display after each event.
+        """
 
-        self.update_game(display)
+        self.update_board(display)
 
 
-    def update_game(self, display):
-        # CHANGING THE GAME BACKGROUND
+    def update_board(self, display: pygame.Surface)-> None:
+        """
+        This continously updates the board after every move in the Connect 
+        2^2 game.
+        """
 
-
-        SLOT_SIZE = 75
-        HOLE_SIZE = 25
-
-        NUMBEROFCOLUMNS = self.board.get_grid_size()[1]
-        NUMBEROFROWS = self.board.get_grid_size()[0]
-
-        # Adding a Background
+        # Adding the board background to the game
         board_background = pygame.image.load('./Assets/BOARD2.png').convert()
-
         display.blit(board_background, (0,0))
         
-        
         """
-        GRID COORDINATES OF Board in justBoard.png:
+        Grid coordinates of the Board in BOARD2.png:
             
         topLeft = (138, 75)
         bottomLeft = (138, 525)
@@ -70,18 +88,26 @@ class DisplayBoard:
         topRight = (663, 75)
         bottomRight = (663, 525)
         """
+        
+         # The size of each slot of the board
+        SLOT_SIZE = 75
+        HOLE_SIZE = 25
+
+        NUMBEROFCOLUMNS = self.board.get_grid_size()[1]
+        NUMBEROFROWS = self.board.get_grid_size()[0]
 
         # The matrix representation of the grid
         grid = self.board.get_grid()
 
-        # if there is a winner, switch to the end screen
+        # If there is a winner, switch to the end screen
         if self.board.get_winner() != '-':
             
-            self.game.set_winner(self.board.get_winner())
+            self._game.set_winner(self.board.get_winner())
             self.reset_board()
-            self.game.gamestate = STATE.End
+            self._game.gamestate = STATE.End
 
-        # Creates the pyGame Board with corresponding slots and holes from the matrix board representation.
+        # Creates the slots and holes on the board,
+        # then updates the board from the matrix board representation.
         # This strategy for creating the board was inspired by a tutorial on freeCodeCamp.org.
         # Video URL: https://www.youtube.com/watch?v=XpYz-q1lxu8
         for column in range(NUMBEROFCOLUMNS):
@@ -108,19 +134,21 @@ class DisplayBoard:
                                        (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
                                        HOLE_SIZE)
                                        
-
+        
+        #Displays who's turn it is in the game
         font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
 
-
         if self.turn == 0:
-            text = font.render("Player 1's Turn.", True, WHITE, BLACK)
+            text = font.render("Player 1's Turn. Pick Where to Drop Disc.", True, WHITE, BLACK)
         elif self.turn == 1:
-            text = font.render("Player 2's Turn.", True, WHITE, BLACK)
-
-
+            text = font.render("Player 2's Turn. Pick Where to Drop Disc.", True, WHITE, BLACK)
+            
+        goal = font.render("Connect 2^2 Discs in a Row.", True, WHITE, BLACK)
+        goalBox = goal.get_rect(center=(400, 35))
         textBox = text.get_rect(center=(400,560))
-
+        
         display.blit(text, textBox)
+        display.blit(goal, goalBox)
 
         pygame.display.flip()
 
@@ -167,6 +195,7 @@ class DisplayBoard:
             
             width_of_columns = width // 7
             
+            # return which column was picked w/ a simple calculation
             return (x_position-138)//width_of_columns
           
         # Invalid X Coordinate
@@ -175,6 +204,10 @@ class DisplayBoard:
         
         
     def reset_board(self) -> None:
+        """
+        This class resets the board, so that we can play again, if the
+        player chooses to.
+        """
         
         # Clear Board to a new Board
         self.board = Board()
