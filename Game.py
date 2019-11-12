@@ -1,5 +1,4 @@
 import pygame
-from pygame import mouse
 import os
 import Menu
 import DisplayBoard
