@@ -4,7 +4,7 @@ import Menu
 import DisplayBoard
 import Board
 from State import STATE
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 
 class Game:
@@ -25,7 +25,15 @@ class Game:
 
     screen: the display window of the game
 
-    board: The matrix representation of our board in the console.
+    events: the pygame events, default set to None
+
+    tracks: a list of strings of gametracks
+
+    winner: the current winner of the game, default set to -
+
+    currtrack: the index of the current track, default set to 0
+
+    board: The matrix representation of our board in the console
 
     menu: the game menu
 
@@ -42,6 +50,10 @@ class Game:
     has_winner: bool
     size: Tuple[int, int]
     screen: Optional[pygame.Surface]
+    events: pygame.event
+    tracks: List
+    winner: str
+    currtrack: int
     board: Board
     menu: Menu
     displayboard: DisplayBoard
