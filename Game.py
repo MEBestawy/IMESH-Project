@@ -73,11 +73,7 @@ class Game:
         self.screen = None
         self.events = None
         self.tracks = [
-            "./Assets/audio/bgm/louie_zong_cat_toy.wav",
-            "./Assets/audio/bgm/ffxv_ost_crystalline_chill.wav",
-            "./Assets/audio/bgm/jayswanzone_musicpg.wav",
-            "./Assets/audio/bgm/nearstheme_deathnote.wav",
-            "./Assets/audio/bgm/snailshouse_ramune.wav"
+            "./Assets/audio/bgm/Rainfall_fengthefern.mp3",
         ]
 
         self.winner = "-"
