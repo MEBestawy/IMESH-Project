@@ -74,6 +74,8 @@ class Game:
         self.events = None
         self.tracks = [
             "./Assets/audio/bgm/Rainfall_fengthefern.mp3",
+            "./Assets/audio/bgm/Disfigure_Blank_NCS_Release.wav",
+            "./Assets/audio/bgm/Last Heroes_Dimensions_NCS_Release.wav",
         ]
 
         self.winner = "-"
