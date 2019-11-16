@@ -37,13 +37,14 @@ class Menu:
     transbg: pygame.Surface
     buttons: Dict
 
-    def __init__(self, game):
+    def __init__(self, game, handler):
         """
         Initializes a Menu that has the game, and buttons.
 
         :param game: the main game class
         """
         self._game = game
+        self._handler = handler
         self._xpos = 0
         self._sound = pygame.mixer.Sound("./Assets/audio/sfx/click.wav")
         self._trackname = "track_" + str(self._game.currtrack)
@@ -51,7 +52,7 @@ class Menu:
         # Creates reusable assets
 
         # Instantiates a translucent background
-        self.transbg = pygame.Surface((700, 400))
+        self.transbg = pygame.Surface((700, 440))
         self.transbg.set_alpha(100)
         self.transbg.fill((0, 0, 0))
 
@@ -61,7 +62,7 @@ class Menu:
             "play": Button((0, 0, 0), 350, 250, 50, 120, "PLAY", 20, True),
             "option": Button((0, 0, 0), 350, 350, 50, 120, "OPTION", 20, True),
             "quit": Button((0, 0, 0), 350, 450, 50, 120, "QUIT", 20, True),
-            "back": Button((0, 0, 0), 650, 525, 50, 120, "BACK", 20, True),
+            "back": Button((0, 0, 0), 660, 545, 50, 120, "BACK", 20, True),
             "arrowl": Button((0, 0, 0), 350, 115, 50, 50, " < ", 40, False),
             "arrowr": Button((0, 0, 0), 655, 115, 50, 50, " > ", 40, False),
             "arrow_bgm_l": Button((0, 0, 0), 350, 190, 50, 50, " < ", 40, False),
@@ -207,7 +208,12 @@ class Menu:
 
             # Display the title and other objects
             screen.blit(self.transbg, (50, 100))
-            pygame.draw.rect(screen, (255, 255, 255), (50, 100, 700, 400), 3)
+            pygame.draw.rect(screen, (255, 255, 255), (50, 100, 700, 440), 3)
+            pygame.draw.rect(screen, (255, 255, 255), (50, 100, 700, 225), 3)
+            howplay = pygame.image.load("./Assets/howplay.png").convert()
+            howplay.set_colorkey((85, 255, 0))
+            howplay = pygame.transform.scale(howplay, (533, 200))
+
             screen.blit(options, ((self._game.width/2 - options.get_width()/2), 40))
             screen.blit(bgm, (75, 125))
             screen.blit(trknm, ((655 + 350 + 50)/2 - trknm.get_width()/2, 125))  #around 450
@@ -215,6 +221,7 @@ class Menu:
             screen.blit(bgm_vol_num, ((655 + 350 + 165)/2 - trknm.get_width()/2, 200))
             screen.blit(sfx_vol, (75, 275))
             screen.blit(sfx_vol_num, ((655 + 350 + 165)/2 - trknm.get_width()/2, 275))
+            screen.blit(howplay, ((self._game.width/2 - howplay.get_width()/2), 330))
 
             # Draw button
             self.buttons["back"].draw(screen)

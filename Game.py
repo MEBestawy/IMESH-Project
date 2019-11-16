@@ -3,6 +3,7 @@ import os
 import Menu
 import DisplayBoard
 import Board
+import Handler
 from State import STATE
 from typing import Tuple, Optional, List
 
@@ -86,8 +87,9 @@ class Game:
         pygame.mixer.init(44100, -16, 2, 512)
 
         self.board = Board.Board()
-        self.menu = Menu.Menu(self)
-        self.displayboard = DisplayBoard.DisplayBoard(self, self.board)
+        self.handler = Handler.Handler()
+        self.menu = Menu.Menu(self, self.handler)
+        self.displayboard = DisplayBoard.DisplayBoard(self, self.handler, self.board)
 
         # Sets the game state.
         # By default, the game state starts with the menu state.
@@ -149,11 +151,13 @@ class Game:
         """
         if self.gamestate == STATE.Game:
             self.displayboard.tick()
+            self.handler.tick()
             if self.has_winner:
                 self.gamestate = STATE.End
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
+            self.handler.tick()
             self.menu.tick()
 
     def render(self):
@@ -163,9 +167,11 @@ class Game:
         """
         if self.gamestate == STATE.Game:
             self.displayboard.render(self.screen)
+            self.handler.render(self.screen)
         elif self.gamestate == STATE.Menu or \
                 self.gamestate == STATE.End or \
                 self.gamestate == STATE.Option:
+            self.handler.render(self.screen)
             self.menu.render(self.screen)
 
         pygame.display.flip()
