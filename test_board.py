@@ -137,9 +137,6 @@ def test_move():
     
     """
 
-    print(board)
-
-
 @pytest.mark.get_token
 def test_get_token():
     """
@@ -154,6 +151,9 @@ def test_get_token():
 
     # invalid col
     assert board.get_token(1, -1) == board.EMPTY
+
+    # invalid row and col
+    assert board.get_token(-1,-1) == board.EMPTY
 
     # setup board
     board.move(board.P1, 0)
@@ -174,10 +174,33 @@ def test_get_token():
     board.move(board.P1, 1)
     board.move(board.P2, 4)
 
+    """
+     Board looks like:
+    
+      0 1 2 3 4 5 6 
+     +-+-+-+-+-+-+-+
+    0|-|-|-|-|-|-|-|0
+     +-+-+-+-+-+-+-+
+    1|-|-|-|-|-|-|-|1
+     +-+-+-+-+-+-+-+
+    2|-|-|-|-|-|-|-|2
+     +-+-+-+-+-+-+-+
+    3|-|-|-|X|O|-|-|3
+     +-+-+-+-+-+-+-+
+    4|-|-|O|O|O|-|-|4
+     +-+-+-+-+-+-+-+
+    5|X|X|X|O|X|-|-|5
+     +-+-+-+-+-+-+-+
+      0 1 2 3 4 5 6 
+    """
+
     # valid
     assert board.get_token(5, 3) == board.P2
     assert board.get_token(5, 6) == board.EMPTY
     assert board.get_token(3, 3) == board.P1
+    assert board.get_token(3, 4) == board.P2
+    assert board.get_token(4, 4) == board.P2
+    assert board.get_token(2, 1) == board.EMPTY
 
 
 @pytest.mark.winner
@@ -191,8 +214,8 @@ def test_get_winner():
     board2 = Board()
 
     # board is empty
-    for i in range(board.get_grid_size()[1]):
-        assert board.get_winner(i) == board.EMPTY
+    board.find_winner(0)
+    assert board.get_winner() == board.EMPTY
 
     # vertical win
     for i in range(4):
@@ -200,16 +223,56 @@ def test_get_winner():
 
     for i in range(3):
         board.move(Board.P2, 2)
+    board.find_winner(1)
+    assert board.get_winner() == board.P1
 
-    assert board.get_winner(1) == board.P1
+    """
+     Board looks like:
+    
+      0 1 2 3 4 5 6 
+     +-+-+-+-+-+-+-+
+    0|-|-|-|-|-|-|-|0
+     +-+-+-+-+-+-+-+
+    1|-|-|-|-|-|-|-|1
+     +-+-+-+-+-+-+-+
+    2|-|X|-|-|-|-|-|2
+     +-+-+-+-+-+-+-+
+    3|-|X|O|-|-|-|-|3
+     +-+-+-+-+-+-+-+
+    4|-|X|O|-|-|-|-|4
+     +-+-+-+-+-+-+-+
+    5|-|X|O|-|-|-|-|5
+     +-+-+-+-+-+-+-+
+      0 1 2 3 4 5 6 
+    """
 
     # horizontal win
     for i in range(4):
         board1.move(Board.P2, i)
     for i in range(3):
         board1.move(Board.P1, 1)
+    board1.find_winner(2)
+    assert board1.get_winner() == board.P2
 
-    assert board1.get_winner(0) == board.P2
+    """
+     Board1 looks like:
+    
+      0 1 2 3 4 5 6 
+     +-+-+-+-+-+-+-+
+    0|-|-|-|-|-|-|-|0
+     +-+-+-+-+-+-+-+
+    1|-|-|-|-|-|-|-|1
+     +-+-+-+-+-+-+-+
+    2|-|X|-|-|-|-|-|2
+     +-+-+-+-+-+-+-+
+    3|-|X|-|-|-|-|-|3
+     +-+-+-+-+-+-+-+
+    4|-|X|-|-|-|-|-|4
+     +-+-+-+-+-+-+-+
+    5|O|O|O|O|-|-|-|5
+     +-+-+-+-+-+-+-+
+      0 1 2 3 4 5 6 
+    """
 
     # diagonal win
 
@@ -230,12 +293,28 @@ def test_get_winner():
 
     board2.move(Board.P1, 4)
 
-    assert board2.get_winner(1) == board.P1
+    board2.find_winner(1)
+    assert board2.get_winner() == board.P1
 
-
-@pytest.mark.load
-def test_load():
-    pass
+    """
+     Board 2 looks like
+    
+      0 1 2 3 4 5 6 
+     +-+-+-+-+-+-+-+
+    0|-|-|-|-|-|-|-|0
+     +-+-+-+-+-+-+-+
+    1|-|-|-|-|-|-|-|1
+     +-+-+-+-+-+-+-+
+    2|-|-|-|-|X|-|-|2
+     +-+-+-+-+-+-+-+
+    3|-|-|-|X|O|-|-|3
+     +-+-+-+-+-+-+-+
+    4|-|-|X|O|X|-|-|4
+     +-+-+-+-+-+-+-+
+    5|-|X|O|O|X|O|-|5
+     +-+-+-+-+-+-+-+
+      0 1 2 3 4 5 6 
+    """
 
 
 if __name__ == "__main__":
