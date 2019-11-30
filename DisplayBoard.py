@@ -1,6 +1,7 @@
 import pygame
 from State import STATE
 from Board import Board
+from Button import Button
 
 # GLOBAL variables for RGB of colours on the board
 BLACK = (0, 0, 0)
@@ -41,9 +42,9 @@ class DisplayBoard:
         self._game = game
         self._handler = handler
         self.board = board
+        self.backbtn = Button((0, 0, 0), 15, 15, 50, 120, "BACK", 20, True)
 
         self.turn = 0
-
 
     def on_event(self, mousepress) -> None:
         """
@@ -51,6 +52,8 @@ class DisplayBoard:
         """
         selected_column = self.get_column(mousepress)
         self.move_next(selected_column)
+        if self.backbtn.is_hover(mousepress.get_pos()):
+            self._game.gamestate = STATE.Menu
 
     def tick(self):
         """
@@ -67,7 +70,6 @@ class DisplayBoard:
         """
 
         self.update_board(display)
-
 
     def update_board(self, display: pygame.Surface)-> None:
         """
@@ -120,20 +122,17 @@ class DisplayBoard:
                                        (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
                                        HOLE_SIZE)
 
-
                 elif grid[row][column] == 'O':
                     pygame.draw.circle(display,
                                        NAVY,
                                        (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
                                        HOLE_SIZE)
 
-
                 else:
                     pygame.draw.circle(display,
                                        LIGHTBLUE,
                                        (138 + (SLOT_SIZE//2) + column*(SLOT_SIZE), 75 + (SLOT_SIZE//2) + row*(SLOT_SIZE)),
                                        HOLE_SIZE)
-
 
         #Displays who's turn it is in the game
         font = pygame.font.Font("./Assets/joystix_monospace.ttf", 20)
@@ -149,9 +148,9 @@ class DisplayBoard:
 
         display.blit(text, textBox)
         display.blit(goal, goalBox)
+        self.backbtn.draw(display)
 
         pygame.display.flip()
-
 
     def move_next(self, column: int) -> bool:
         """
@@ -171,7 +170,6 @@ class DisplayBoard:
                 self.turn -= 1
                 return True
         return False
-
 
     def get_column(self, mousepress) -> int:
 
@@ -201,7 +199,6 @@ class DisplayBoard:
         # Invalid X Coordinate
         else:
             return -1
-
 
     def reset_board(self) -> None:
         """

@@ -48,6 +48,12 @@ class Button:
         self.fontsize = fontsize
         self.visible = visible
 
+    def set_x(self, x):
+        self.x = x
+
+    def set_y(self, y):
+        self.y = y
+
     def draw(self, screen) -> None:
         """
         Draws the Button on the given pygame display.
