@@ -47,7 +47,7 @@ First of all, get a friend to play against! Note, Connect 2^2 can only handle mo
 Title Screen: 
 - "Play": Goes to the game screen to play the game.
 - "Option": Goes to the option screen to pick a soundtrack, adjust BGM & SFX volume, or to read the game rules.
-- "Exit": Quits the game. 
+- "Quit": Exits the game. 
 
 Option Screen: 
 - "Select BGM": Selects a song from a selection of copyright-free music.
@@ -58,8 +58,8 @@ Option Screen:
 ### How to Play
 The game screen contains a 6 by 7 board, be the first to connect 2^2 discs to win the game. 
 - Click on the circles on the board to drop a disc. 
-- Click on the "Back" button to return to the menu. The board will be unaltered until the game ends or the user quits. 
-- **Note:** A disc will only be dropped on the board if a circle is clicked and the top most row is unoccupied. 
+- Click on the "Back" button to return to the menu. The board will be unaltered until the game ends or the user exits the game.
+- **Note:** A disc will only be dropped on the board if a circle is clicked and if the top most row is unoccupied. 
 
 The game ends if someone wins or if there is a tie, and proceeds to the end screen. 
 
