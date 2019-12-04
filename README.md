@@ -40,6 +40,43 @@ Connect 2^2 is a game in which two players stack their discs on top of other dis
 <!-- Installation section -->
 ## <a name="install"></a>Installation
 
+These instructions will help you get a copy of the project up and running on your local device for development and testing purposes.
+
+### Prerequisites
+
+To be able to run our game, you are going to have to download our game's dependencies.
+- Python 3 or newer
+    - Connect 2<sup>2</sup> is written in Python, so without it, you cannot play our game :(
+    - If you do not already have Python installed, you can download it from [here](https://www.python.org/downloads/). Make sure the version of Python you are downloading is Python 3 or higher.
+    - **Note:** When installing Python, make sure to select the add to path option so the next few steps are easier to follow.
+
+- Pygame
+    - Connect 2<sup>2</sup> uses pygame to act ********************
+    - You can download pyGame by opening up your respective command line. For Mac and Linux users, this is your terminal. For Windows users this is your command prompt.
+    - Next you need to enter in the following into your command line. This will download pygame for you.
+    - ```pip install pygame```
+    - Alternatively, you can download pygame from [here](https://www.pygame.org/download.shtml)
+
+- numPy module
+    - Similar to installing pygame, you have to enter the following in to your command line to install the numpy module.
+    - ```pip install numpy```
+
+### Downloading our game
+
+Now that you have all of our game dependencies installed, you can now download our game by either cloning the repo or downloading the game as a zip file.
+
+- Cloning the repo
+    - To clone the repo, simply open up your terminal(Mac/Linux) or command prompt(Windows) and enter the following.
+    - ```git clone https://github.com/MEBestawy/IMESH-Project.git```
+    - **Note:** To do this, you must have git installed on your device. If you do not have git installed [this](https://gist.github.com/derhuerst/1b15ff4652a867391f03#file-linux-md) will help you get git running.
+
+- Downloading the game as a zip file
+    - [Download Connect 2<sup>2</sup> here](https://github.com/MEBestawy/IMESH-Project/archive/master.zip)
+
+### Running our game
+To run our game, simply navigate to Game.py in the IMESH-Project directory and run it with the IDE of your choice.
+**Note:**: If you downloaded our game as a zip file, make sure to unzip and then proceed with the above step.
+     
 <!-- How to Play section -->
 ## <a name="howToPlay"></a> Game Features & How to Play
 First of all, get a friend to play against! Note, Connect 2^2 can only handle mouse input so keyboard input(s) won't do anything.
@@ -94,7 +131,12 @@ repository. You can access it
     
 <!-- Herjot's addendum -->
 - **Herjot Dhaliwal**
-    - PUT YOUR CONTRIBUTION HERE
+    - My responsibility was to help design the Board class and implement some of the methods used in it. I further helped design and implement
+    the unused Player class. This class is left unused for future implementations where someone may want to make AI opponents or redesign the 
+    way we made the game. In addition to this, I am responsible for creating the test board class where I test the functionality of our 
+    Connect 2<sup>2</sup> board. I ensured that moves were made correctly, meaning only moves that are valid are made, whether the correct
+    winner is found if the game has ended and more. Within this README file, I was responsible for walking potential users through the process
+    of installing and running our game without difficulty and provided them with resources that they might find useful.
 
 <!-- Credits section --> 
 ## <a name="credits"></a>Notes & Credits 
