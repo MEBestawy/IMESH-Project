@@ -73,7 +73,7 @@ In this section, we provide a general overview of what each file in our reposito
 
 We divided our repository into 2 sections: assets and code.
 
-The folder `Assets` contains every component we used in pygame for Connect 2^2. This is where you would add any extra image file or sound file to use in our game. 
+The folder `Assets` contains every component we used in `pygame` for Connect 2^2. This is where you would add any extra image file or sound file to use in our game. 
 
 Now, here are the Python source code files in our repository: 
 
