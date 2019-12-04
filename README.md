@@ -67,6 +67,30 @@ The game ends if someone wins or if there is a tie, and proceeds to the end scre
 <!-- Repo Structure section -->
 ## <a name="repoStructure"></a>Repository Structure
 
+<img src="https://i.imgur.com/fWS9FRi.png"></img>
+
+In this section, we provide a general overview of what each file in our repository contains. Make sure to refer to the [Code Documentation](#codeDocument) for further details about the classes and methods in each file.
+
+We divided our repository into 2 sections: assets and code.
+
+The folder `Assets` contains every component we used in pygame for Connect 2^2. This is where you would add any extra image file or sound file to use in our game. 
+
+Now, here are the Python source code files in our repository: 
+
+- `Board.py`: contains information on how to create, move and check for a winner on a Connect 2^2 board.
+
+- `Button.py`: contains information on how to create the different buttons in our game.
+	
+- `DisplayBoard.py`: contains information on how the board is displayed in our Connect 2^2 game and how the game screen is updated after every turn. 
+
+- `Game.py`: contains all the information about how to start the game, how to change game screens and how to modify the music. 
+
+- `Menu.py`: contains information about what is displayed in the menu screen of Connect 2^2.
+
+- `State.py`: contains every state or screen possible in the game.
+
+Please note that are other Python source code files in our repository that we started working on to extend the game in the future. That being said, the files mentioned above are all that are needed to run and modify Connect 2^2. 
+
 <!-- Code Documentation section -->
 ## <a name="codeDocument"></a>Code Documentation
 The documentation for our project can be found in the wiki page of our 
@@ -86,7 +110,12 @@ repository. You can access it
 
 <!-- Shivam's addendum -->
 - **Shivam Bhatoolaul**
-    - PUT YOUR CONTRIBUTION HERE
+    - **In our code,**
+    I worked on the class ``DisplayBoard``, which displays the Connect 2^2 board where our users play our game (see the bottom-left screen in [Screenshots](#screenshot)). This was done by first initializing a ``Board`` class in ``DisplayBoard``. From there, I created a method that continuously renders the current representation of the ``Board`` with sprites on the game screen. Finally, I created methods in ``DisplayBoard`` that update the ``Board`` according to what was clicked on screen. 
+    I also worked on the class ``GameProtoype``, which was originally used to display our game in ``pygame``, before Elysia found a more efficient way to structure our code. 
+    Lastly, I created the class ``PlayGameInConsole``, which can be used to test out new features in the ``Board`` class, if someone decides to extend Connect 2^2.
+
+  - In the **README** file, I worked on the description of our [Repository Structure](#repoStructure).
      
 <!-- Ivan's addendum -->
 - **Ivan Kim**
