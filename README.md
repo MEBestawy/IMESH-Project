@@ -28,6 +28,7 @@ A digital remake of the beloved Connect 4 game.
 
 <!-- Game Description section -->
 ## <a name="intro"></a>Game Description
+Connect 2^2 is a game in which two players stack their discs on top of other discs, aiming to make a Connect 2^2, that is to say align four discs of the same colour horizontally, vertically, or diagonally. A player, upon his or her turn, drops his or her disc into one of the seven columns, given that the said column is not completely filled with discs. If this new disc makes a Connect 2^2, the game ends with the player winning. Otherwise, the game continues with the other player. If a board becomes full with no Connect 2^2, the game ends as a tie.
 
 <!-- Screenshots of the game -->
 ## <a name="screenshot"></a>Screenshots
@@ -67,9 +68,8 @@ The game ends if someone wins or if there is a tie, and proceeds to the end scre
 ## <a name="repoStructure"></a>Repository Structure
 
 <!-- Code Documentation section -->
-## <a name="codeDocument"></a>Game Description
+## <a name="codeDocument"></a>Code Documentation
 
-Connect 2^2 is a game in which two players stack their discs on top of other discs, aiming to make a Connect 2^2, that is to say align four discs of the same colour horizontally, vertically, or diagonally. A player, upon his or her turn, drops his or her disc into one of the seven columns, given that the said column is not completely filled with discs. If this new disc makes a Connect 2^2, the game ends with the player winning. Otherwise, the game continues with the other player. If a board becomes full with no Connect 2^2, the game ends as a tie.
 
 <!-- Contributors section -->
 ## <a name="contributors"></a>Contributors
