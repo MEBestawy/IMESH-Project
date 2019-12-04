@@ -105,4 +105,10 @@ On another note, more content for the Connect 2^2 game will be available in the 
      
 <!-- Liecense section -->
 ## <a name="license"></a>License
+MIT License (MIT)
+
+Copyright © 2019 iMesh Group
+
+You can find a copy of the licence at https://mit-license.org/
+
 
