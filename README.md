@@ -156,7 +156,10 @@ repository. You can access it
      
 <!-- Ivan's addendum -->
 - **Ivan Kim**
-    - PUT YOUR CONTRIBUTION HERE
+
+I was in charge of developing and testing the method ``Board.find_winner``, which determines whether a player whose disc is in the highest non-empty row of a given column has a Connect 2^2. The game calls this method every time a player makes a move, i.e. clicks on a column, with the parameter being the column that the player clicked. If the said player does have a Connect 2^2, the method stores his or her string representation in a private variable.
+I created a ``Player`` class, which represents a player that plays the game, as well, but it is unused for the time being. Should we want to implement new features, such as playing with a non-human opponent, we will bring this class back, and possibly make subclasses of it. However, the game is currently for human vs. human play; as such, the ``Player`` class is not necessary.
+In README.md, I added the [Game Description](#intro).
     
 <!-- Herjot's addendum -->
 - **Herjot Dhaliwal**
