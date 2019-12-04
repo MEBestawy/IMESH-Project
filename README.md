@@ -139,8 +139,9 @@ repository. You can access it
 
 <!-- Mahmoud's addendum -->
 - **Mahmoud El Bestawy**
-    - PUT YOUR CONTRIBUTION HERE
-     
+    - I was responsible for implementing the Board module. I implemented methods such as the constructor, `__str__()`, `load`, and others. I was essentially in charge of handling features in the back-end of our program. Later, I began to focus on an out of scope feature, a storage system. The focus of this system was to be able to load and save Connect2^2 games. This feature was not completed, and not added to the final product as it proved to be complicated to make a Singleton class in python. 
+    
+    - As for the README, I was responsible for creating the general structure of the document and dividing the different headers. Afterward, I added the MIT license and focussed on populating the Code documentation section.
 <!-- Elysia's addendum -->
 - **Elysia Yong**
     - I created the Game class that brought the backend and frontend components of the game together, and I am responsible for most the GUI components of the game such as the different screens. I set up the main Game, Menu, State, and Button classes that are currently utilised for this version of the game. I also added other unused classes such as Handler and GameObject for future implementations whereby these two classes handle object animation in the game. I am also responsible for creating most of the graphical assets such as the game's background and logo, but the music and sound effect are from copyright-free producers and a friend. In this README, I added images in "Game Description" and "Screenshots" sections, and populated the "Game Features & How to Play" and "Notes & Credits" sections. 
