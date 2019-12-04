@@ -82,8 +82,7 @@ repository. You can access it
      
 <!-- Elysia's addendum -->
 - **Elysia Yong**
-
-I created the Game class that brought the backend and frontend components of the game together, and I am responsible for most the GUI components of the game such as the different screens. I set up the main Game, Menu, State, and Button classes that are currently utilised for this version of the game. I also added other unused classes such as Handler and GameObject for future implementations whereby these two classes handle object animation in the game. I am also responsible for creating most of the graphical assets such as the game's background and logo, but the music and sound effect are from copyright-free producers and a friend. In this README, I added images in "Game Description" and "Screenshots" sections, and populated the "Game Features & How to Play" and "Notes & Credits" sections. 
+    - I created the Game class that brought the backend and frontend components of the game together, and I am responsible for most the GUI components of the game such as the different screens. I set up the main Game, Menu, State, and Button classes that are currently utilised for this version of the game. I also added other unused classes such as Handler and GameObject for future implementations whereby these two classes handle object animation in the game. I am also responsible for creating most of the graphical assets such as the game's background and logo, but the music and sound effect are from copyright-free producers and a friend. In this README, I added images in "Game Description" and "Screenshots" sections, and populated the "Game Features & How to Play" and "Notes & Credits" sections. 
 
 <!-- Shivam's addendum -->
 - **Shivam Bhatoolaul**
