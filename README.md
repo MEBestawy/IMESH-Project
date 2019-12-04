@@ -69,14 +69,16 @@ The game ends if someone wins or if there is a tie, and proceeds to the end scre
 
 <!-- Code Documentation section -->
 ## <a name="codeDocument"></a>Code Documentation
-
+The documentation for our project can be found in the wiki page of our 
+repository. You can access it 
+[here](https://github.com/MEBestawy/IMESH-Project/wiki).
 
 <!-- Contributors section -->
 ## <a name="contributors"></a>Contributors
 
 <!-- Mahmoud's addendum -->
 - **Mahmoud El Bestawy**
-    - Null pointer exception, lol. Elysia hard carried.
+    - PUT YOUR CONTRIBUTION HERE
      
 <!-- Elysia's addendum -->
 - **Elysia Yong**
