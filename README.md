@@ -89,7 +89,7 @@ Now, here are the Python source code files in our repository:
 
 - `State.py`: contains every state or screen possible in the game.
 
-Please note that are other Python source code files in our repository that we started working on to extend the game in the future. That being said, the files mentioned above are all that are needed to run and modify Connect 2^2. 
+Please note that are other Python source code files in our repository that we used for testing or that we started working on to extend the game in the future. That being said, the files mentioned above are all that are needed to run and modify Connect 2^2. 
 
 <!-- Code Documentation section -->
 ## <a name="codeDocument"></a>Code Documentation
@@ -110,12 +110,12 @@ repository. You can access it
 
 <!-- Shivam's addendum -->
 - **Shivam Bhatoolaul**
-    - **In our code,**
+    - In our code,
     I worked on the class ``DisplayBoard``, which displays the Connect 2^2 board where our users play our game (see the bottom-left screen in [Screenshots](#screenshot)). This was done by first initializing a ``Board`` class in ``DisplayBoard``. From there, I created a method that continuously renders the current representation of the ``Board`` with sprites on the game screen. Finally, I created methods in ``DisplayBoard`` that update the ``Board`` according to what was clicked on screen. 
     I also worked on the class ``GameProtoype``, which was originally used to display our game in ``pygame``, before Elysia found a more efficient way to structure our code. 
     Lastly, I created the class ``PlayGameInConsole``, which can be used to test out new features in the ``Board`` class, if someone decides to extend Connect 2^2.
 
-  - In the **README** file, I worked on the description of our [Repository Structure](#repoStructure).
+  - In the README file, I worked on the description of our [Repository Structure](#repoStructure).
      
 <!-- Ivan's addendum -->
 - **Ivan Kim**
