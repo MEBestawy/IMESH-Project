@@ -76,8 +76,7 @@ class Board:
 
     def get_winner(self) -> str:
         """
-
-        :return:
+        :return: The current winner of the Connect2^2 game
         """
         return self.__winner
 
@@ -165,8 +164,10 @@ class Board:
 
     def load(self, board_lst: List) -> None:
         """
+        Construct this board structure based on the tokens stored in board_lst.
 
-        :param board_lst:
+        :param board_lst: A nested list for token values, representing rows and
+        columns of the board.
         """
         # Loading the board from the list
         for row in range(len(board_lst)):
@@ -179,17 +180,17 @@ class Board:
             while j > -1 and self.__grid[j][i] != Board.EMPTY:
                 j -= 1
             self.__avail_pos[i] = j
-            
+
     def get_grid(self) -> List[List[str]]:
         """
         Returns the matrix representation of the board for the game.
         """
-        
+
         grid = []
-        
+
         for row in self._Board__grid:
             grid.append(list(row))
-            
+
         return grid
 
     def __str__(self):
